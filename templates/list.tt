@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="./static/main.css">
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">[% settings.blog.title %]</h1>
+                </div>
+            </div>
+        </section>
+        <div class="container column is-10 is-offset-1">
+            <nav class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <p class="level-item"><a href="/">top</a></p>
+                    <p class="level-item">list</p>
+                </div>
+            </nav>
+            <section class="articles">
+                <div class="content">
+                    <table class="table is-hoverable">
+                        [% for articles -> article %]
+                        <tr>
+                            <th style="width: 150px;">[% article.params.date %]</th>
+                            <th><a href="/entry/[% article.params.name %].html">[% article.params.title %]</a></th>
+                        </tr>
+                        [% end %]
+                    </table>
+                </div>
+
+        </div>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                [% settings.blog.footer %]
+            </div>
+        </footer>
+    </body>
+</html>
