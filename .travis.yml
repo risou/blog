@@ -19,7 +19,7 @@ script:
 after_success:
   - git checkout master
   - git add docs/*
-  - git commit -m "by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
+  - git commit -m "[ci skip] by Travis CI (JOB $TRAVIS_JOB_NUMBER)"
   - git push https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git master # >/dev/null 2>&1
 notifications:
   email: false
