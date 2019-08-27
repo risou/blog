@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="./static/main.css">
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">blog title</h1>
+                </div>
+            </div>
+        </section>
+        <div class="container column is-10 is-offset-1">
+            <nav class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <p class="level-item">top</p>
+                    <p class="level-item"><a href="/list.html">list</a></p>
+                </div>
+            </nav>
+            <section class="articles">
+                
+                <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2019-05-13-use-emacs-on-alacritty.html">alacritty で Emacs を使う</a></h1>
+                    <div class="subtitle published">2019-05-13</div>
+                    <div class="content">
+                        <p>alacritty というターミナルエミュレータが速いという話を聞き、仕事が一段落したタイミングで導入してみた。</p>
+
+<p><a href="https://github.com/jwilm/alacritty">alacritty</a></p>
+
+<p>まだまだ実装段階というかリッチな機能が不足していてつらいという話を聞いたりもするが（タブで複数開けないとか）、個人的には今のところ使っていくのに最低限必要なものは揃ってくれていると感じた。</p>
+
+<p>僕が使っていくのに困らない大きな要因は tmux を愛用しているから、というのが大きそうではある。</p>
+
+<p>tmux でタブや分割に相当する機能が確立されているため、ターミナルエミュレータ側での実装を必要としていない。</p>
+
+<h3>alacritty で Emacs を使う</h3>
+
+<p>本題。</p>
+
+<p>Mac OS 上で試してみたところ、いくつかの問題が起きた。</p>
+
+<h4>Meta キーが反応しない</h4>
+
+<p>Mac OS で Emacs を使うにあたっては option/alt キーを Meta として扱うように設定しているが、これまで使っていた iTerm2 では設定できたこれが alacritty では今はまだ設定できない。</p>
+
+<p>これにどう対応するかというと、以下のような設定を追加する。</p>
+
+<p>以下の設定は <a href="https://github.com/jwilm/alacritty/issues/62#issuecomment-347552058">Set option as meta in MacOS · Issue #62 · jwilm/alacritty</a> から拝借した。</p>
+
+<pre><code>
+key_bindings:
+
+  # meta
+
+  - { key: A,         mods: Alt,       chars: "\x1ba"                       }
+
+  - { key: B,         mods: Alt,       chars: "\x1bb"                       }
+
+  - { key: C,         mods: Alt,       chars: "\x1bc"                       }
+
+  - { key: D,         mods: Alt,       chars: "\x1bd"                       }
+
+  - { key: E,         mods: Alt,       chars: "\x1be"                       }
+
+  - { key: F,         mods: Alt,       chars: "\x1bf"                       }
+
+  - { key: G,         mods: Alt,       chars: "\x1bg"                       }
+
+  - { key: H,         mods: Alt,       chars: "\x1bh"                       }
+
+  - { key: I,         mods: Alt,       chars: "\x1bi"                       }
+
+  - { key: J,         mods: Alt,       chars: "\x1bj"                       }
+
+  - { key: K,         mods: Alt,       chars: "\x1bk"                       }
+
+  - { key: L,         mods: Alt,       chars: "\x1bl"                       }
+
+  - { key: M,         mods: Alt,       chars: "\x1bm"                       }
+
+  - { key: N,         mods: Alt,       chars: "\x1bn"                       }
+
+  - { key: O,         mods: Alt,       chars: "\x1bo"                       }
+
+  - { key: P,         mods: Alt,       chars: "\x1bp"                       }
+
+  - { key: Q,         mods: Alt,       chars: "\x1bq"                       }
+
+  - { key: R,         mods: Alt,       chars: "\x1br"                       }
+
+  - { key: S,         mods: Alt,       chars: "\x1bs"                       }
+
+  - { key: T,         mods: Alt,       chars: "\x1bt"                       }
+
+  - { key: U,         mods: Alt,       chars: "\x1bu"                       }
+
+  - { key: V,         mods: Alt,       chars: "\x1bv"                       }
+
+  - { key: W,         mods: Alt,       chars: "\x1bw"                       }
+
+  - { key: X,         mods: Alt,       chars: "\x1bx"                       }
+
+  - { key: Y,         mods: Alt,       chars: "\x1by"                       }
+
+  - { key: Z,         mods: Alt,       chars: "\x1bz"                       }
+
+  - { key: A,         mods: Alt|Shift, chars: "\x1bA"                       }
+
+  - { key: B,         mods: Alt|Shift, chars: "\x1bB"                       }
+
+  - { key: C,         mods: Alt|Shift, chars: "\x1bC"                       }
+
+  - { key: D,         mods: Alt|Shift, chars: "\x1bD"                       }
+
+  - { key: E,         mods: Alt|Shift, chars: "\x1bE"                       }
+
+  - { key: F,         mods: Alt|Shift, chars: "\x1bF"                       }
+
+  - { key: G,         mods: Alt|Shift, chars: "\x1bG"                       }
+
+  - { key: H,         mods: Alt|Shift, chars: "\x1bH"                       }
+
+  - { key: I,         mods: Alt|Shift, chars: "\x1bI"                       }
+
+  - { key: J,         mods: Alt|Shift, chars: "\x1bJ"                       }
+
+  - { key: K,         mods: Alt|Shift, chars: "\x1bK"                       }
+
+  - { key: L,         mods: Alt|Shift, chars: "\x1bL"                       }
+
+  - { key: M,         mods: Alt|Shift, chars: "\x1bM"                       }
+
+  - { key: N,         mods: Alt|Shift, chars: "\x1bN"                       }
+
+  - { key: O,         mods: Alt|Shift, chars: "\x1bO"                       }
+
+  - { key: P,         mods: Alt|Shift, chars: "\x1bP"                       }
+
+  - { key: Q,         mods: Alt|Shift, chars: "\x1bQ"                       }
+
+  - { key: R,         mods: Alt|Shift, chars: "\x1bR"                       }
+
+  - { key: S,         mods: Alt|Shift, chars: "\x1bS"                       }
+
+  - { key: T,         mods: Alt|Shift, chars: "\x1bT"                       }
+
+  - { key: U,         mods: Alt|Shift, chars: "\x1bU"                       }
+
+  - { key: V,         mods: Alt|Shift, chars: "\x1bV"                       }
+
+  - { key: W,         mods: Alt|Shift, chars: "\x1bW"                       }
+
+  - { key: X,         mods: Alt|Shift, chars: "\x1bX"                       }
+
+  - { key: Y,         mods: Alt|Shift, chars: "\x1bY"                       }
+
+  - { key: Z,         mods: Alt|Shift, chars: "\x1bZ"                       }
+
+  - { key: Key1,      mods: Alt,       chars: "\x1b1"                       }
+
+  - { key: Key2,      mods: Alt,       chars: "\x1b2"                       }
+
+  - { key: Key3,      mods: Alt,       chars: "\x1b3"                       }
+
+  - { key: Key4,      mods: Alt,       chars: "\x1b4"                       }
+
+  - { key: Key5,      mods: Alt,       chars: "\x1b5"                       }
+
+  - { key: Key6,      mods: Alt,       chars: "\x1b6"                       }
+
+  - { key: Key7,      mods: Alt,       chars: "\x1b7"                       }
+
+  - { key: Key8,      mods: Alt,       chars: "\x1b8"                       }
+
+  - { key: Key9,      mods: Alt,       chars: "\x1b9"                       }
+
+  - { key: Key0,      mods: Alt,       chars: "\x1b0"                       }
+
+  - { key: Space,     mods: Control,   chars: "\x00"                        } # Ctrl + Space
+
+  - { key: Grave,     mods: Alt,       chars: "\x1b`"                       } # Alt + `
+
+  - { key: Grave,     mods: Alt|Shift, chars: "\x1b~"                       } # Alt + ~
+
+  - { key: Period,    mods: Alt,       chars: "\x1b."                       } # Alt + .
+
+  - { key: Key8,      mods: Alt|Shift, chars: "\x1b*"                       } # Alt + *
+
+  - { key: Key3,      mods: Alt|Shift, chars: "\x1b#"                       } # Alt + #
+
+  - { key: Period,    mods: Alt|Shift, chars: "\x1b&gt;"                       } # Alt + &gt;
+
+  - { key: Comma,     mods: Alt|Shift, chars: "\x1b&lt;"                       } # Alt + &lt;
+
+  - { key: Minus,     mods: Alt|Shift, chars: "\x1b_"                       } # Alt + _
+
+  - { key: Key5,      mods: Alt|Shift, chars: "\x1b%"                       } # Alt + %
+
+  - { key: Key6,      mods: Alt|Shift, chars: "\x1b^"                       } # Alt + ^
+
+  - { key: Backslash, mods: Alt,       chars: "\x1b\\"                      } # Alt + \
+
+  - { key: Backslash, mods: Alt|Shift, chars: "\x1b|"                       } # Alt + |
+</code></pre>
+
+<h4>Ctrl/Alt + 記号の一部が反応しない</h4>
+
+<p>上記の他に、僕が Emacs 上で設定しているホットキーが一部反応しなかったのでそれについても設定を加えている。</p>
+
+<pre><code>
+  - { key: Semicolon, mods: Control,   chars: "\x18\x40\x63\x3b"            } # Ctrl + ;
+
+  - { key: Semicolon, mods: Alt,       chars: "\x1b;"                       } # Alt + ;
+
+  - { key: Slash,     mods: Control,   chars: "\x1f"                        } # Ctrl + /
+
+  - { key: Apostrophe, mods: Control,  chars: "\x18\x40\x63\x27"            } # Ctrl + ''
+</code></pre>
+
+<p>それぞれ <code>helm-mini</code>, <code>comment-dwim-2</code>, <code>undo-tree-undo</code>, <code>redo</code> を割り当てていたが、この設定を追加しておかないと反応しなかった。</p>
+
+<h3>その他のカスタマイズ</h3>
+
+<p>本題は以上だが、その他にいくつか不便を解消するために行った設定があるので残しておく。</p>
+
+<h4>日本語を表示するためのフォントの設定</h4>
+
+<p>これまで <code>Menlo for Powerline</code> を使っていたが、 El Capitan で alacritty を動かすとマルチバイト文字の右半分が欠けてしまった。</p>
+
+<p>これについては <code>Cica</code> というフォントに切り替えることで解消した。</p>
+
+<p>ちなみに High Sierra ではこの問題には遭遇しなかった。</p>
+
+<h4>locale を自動判定してもらえない</h4>
+
+<p>シェルの起動時に locale が自動判定されず Powerline の設定を読み込むタイミングで Python がエラーを吐いてしまった。</p>
+
+<p>これはうまく設定する方法がなさそうだったので、ひとまず rc ファイルに以下の1行を加えて事なきを得た。</p>
+
+<pre><code>
+export LANG="ja_JP.UTF-8"
+</code></pre>
+
+<p>ちなみにこの問題は日本語の表示とは逆に High Sierra では起きたが El Capitan では起きなかった（ただしこれについてはそれぞれの環境での設定の違いが原因であって OS のバージョンの問題ではなさそうな気がしている）。</p>
+                    </div>
+                </div>
+                
+                <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2018-09-11-builderscon-tokyo-2018.html">buiderscon tokyo 2018 （の記録）</a></h1>
+                    <div class="subtitle published">2018-09-11</div>
+                    <div class="content">
+                        <h2>参加した理由</h2>
+
+<p>友人からのお誘い。</p>
+
+<p>「会場、家から近いでしょう？」</p>
+
+<p>なるほどたしかに。</p>
+
+<h2>サポーターチケット</h2>
+
+<p>なんでサポーターチケットにしたのかちょっと記憶が曖昧だけれど、特に後悔はしていない。</p>
+
+<p>ノベルティについては、電子名札はそんなに期待してなくて、サコッシュ良さそう〜という気持ちだった。</p>
+
+<p>けど、会場で実物に触れてみると電子名札が想像以上に良くてワクワクするアイテムだったので、サポーターチケットで正解でしたね。</p>
+
+<h2>聞いてきた話</h2>
+
+<h3>IoT開発の闇</h3>
+
+<p>本当に闇だった。</p>
+
+<p>個人的にはこれがベストトークなんだけれど、投票することもできないし、この感情を当日聞けなかった人と共有することもできない。</p>
+
+<h3>Electronによるアプリケーション開発事情2018</h3>
+
+<p>個人的に共感しまくった話だった。</p>
+
+<p>今年に入って Electron でアプリを作り始めた、というところがタイミング的にバッチリ自分と重なってて、あちこちで「わかる〜」って気持ちになった。</p>
+
+<p>しかし僕と違って、他の人も使うことをちゃんと考えて開発してて偉い……。</p>
+
+<h3>パスワードレスなユーザー認証時代を迎えるためにサービス開発者がしなければならないこと</h3>
+
+<p>パスワード早く滅びて、と思いつつもそういう世界の実現って大変だろうなあ、と思っていたことを実際に実現しようとしている人たちの話が聞けた。</p>
+
+<p>認証周りは考えることが多いし、慎重に一歩ずつ進んでいってくれてるだけでもありがたい。</p>
+
+<h3>JavaCardの世界</h3>
+
+<p>うーん、これはなかなか……。</p>
+
+<p>10年前〜20年前を彷彿とさせる話が大量に出てきて、これが2018年の話です、と言われてもにわかには信じがたい、みたいな内容だった。</p>
+
+<p>（自分は当事者ではないので他人事として楽しめたけれど）</p>
+
+<h3>遠いようで身近なサウンドエンジニアリング</h3>
+
+<p>普段の自分には関わりのない世界の話。</p>
+
+<p>とはいえ、学術的な部分は当然知っていることで、そこから実際に曲として完成させていくまでにどのようなことをやっているのか、自分の知識と現場での現実の結びついてないところが知れてよかった。</p>
+
+<p>自分の仕事に関係なさそうだから他のを優先するつもりだったけど、行って正解だった。</p>
+
+<h2>感想</h2>
+
+<p>builderscon 、安定感というか安心感がある。</p>
+
+<p>一番緊張せずに参加できるカンファレンスだと思う。</p>
+
+<p>最近、事情があってあまりカンファレンスに行かないようにしていたけれど、行ってみるとやはり楽しいので今度はもっと早い段階から参加を決めて準備できるようにしたい。</p>
+                    </div>
+                </div>
+                
+                <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2018-06-24-clean-hhkb.html">HHKB を漂白した</a></h1>
+                    <div class="subtitle published">2018-06-24</div>
+                    <div class="content">
+                        <p>3ヶ月ほど前のこと。</p>
+
+<p>諸事情で、押入れにしまっていた HHKB Type-S 白を約2年ぶりに出すことになった。</p>
+
+<p>出してみると、（暗所に保存していたのに）かなり日焼けしており、そのまま使うには抵抗のある状況だった。</p>
+
+<p>これは叙述的な問題で、実際には日焼けしたのではなく黄ばんでいる、といった方が正しいのかもしれない。</p>
+
+<p>（今回、原因とか回避方法とかは調べていない）</p>
+
+<p><img src="/static/img/hhkb_old.jpg" alt="漂白前" /></p>
+
+<p>白さを取り戻す方法についてはググるといろいろ出てくるのでここでは手順を詳細に記したりはしない。</p>
+
+<p>簡単に言うと、バラして漂白剤につけて1週間くらい日光（紫外線）に当てると白くなる、という感じ。</p>
+
+<p><img src="/static/img/hhkb_new.jpg" alt="漂白後" /></p>
+
+<p>無刻印だったので、バラしてキートップを洗浄したあと、戻すのに若干手間取った。</p>
+
+<p>外側のキーは横幅が違ったり同じだったりするので微妙にややこしいし、内側のキーは列ごとに角度（傾斜）が異なるので、どの列かは容易に判断できるが、そこから先の判断材料がない。</p>
+
+<p>バラす前と全く同じではないけれど、同じ形のものがちゃんと入るように試行錯誤して、動作を確認したところ、問題なく動いたので、これでいいか、という感じになった。</p>
+                    </div>
+                </div>
+                
+                <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2018-04-16-make-qiita-team-viewer.html">Qiita Team Viewer というアプリを作った</a></h1>
+                    <div class="subtitle published">2018-04-16</div>
+                    <div class="content">
+                        <p>インターネットで生きていると、様々なサービスのアカウントが増えて管理が大変になったりすると思います。あるいはアカウント自体は1つだけど紐づくグループが増えるパターンもあります。</p>
+
+<p>たとえば Google アカウント（G Suite アカウント）とか GitHub の organization とか Slack の team とか Qiita:Team とか、仕事してたり OSS 活動してたりするとうっかり増えちゃいますよね。</p>
+
+<p>本題とは一切関係ないけど、僕はこの現象をアカウント・マルティプライズ(account multiplies)と呼んでいます。</p>
+
+<h2>複数の所属している Qiita:Team の記事を一覧で見たい</h2>
+
+<p>今回は Qiita:Team の話です。紆余曲折あって所属するチームが複数に増えてしまった僕は、わざわざチームごとにブラウザのタブを開いて個別に閲覧することにつらさを感じました。</p>
+
+<p>この手の同一サービス複数アカウントについては、サービスの主旨によって対応が変わるところですが、個人的には Qiita:Team の記事自体は複数のチームのものが混ざって一覧表示されても困らないなと思ったので、そういう使い方ができるアプリを作ることにしました。</p>
+
+<h2>Qiita Team Viewer</h2>
+
+<p>作ったものはここから落とせます。</p>
+
+<p><a href="https://github.com/risou/qiita-team-viewer/releases">Releases · risou/qiita-team-viewer</a></p>
+
+<p>使い方は簡単で、起動して（Gatekeeper 周りで警告でるかもしれません） Qiita のアカウントでログインしてアプリの連携を許可してもらえば、アカウントに紐づく Qiita:Team の記事の一覧が画面左側に出てきます。記事を選ぶと画面右側に記事の内容およびコメントが表示されます（その他は README をご覧ください）。</p>
+
+<p>Qiita Team Viewer v0.1.0 では以下のことができます。</p>
+
+<ul>
+<li><p>アカウントに紐づく Qiita:Team の記事が読める</p>
+
+<ul>
+<li>ただしシングルサインオンでしかログインできない Qiita:Team の記事は読めません（API の制約によるものです）</li>
+</ul>
+</li>
+<li><p>閲覧している記事に絵文字リアクションを追加／削除する</p></li>
+<li><p>閲覧している記事へのコメントに絵文字リアクションを追加／削除する</p></li>
+<li><p>閲覧している記事のページをブラウザで開く</p></li>
+</ul>
+
+
+<p>Qiita Team Viewer v0.1.0 ではできないけど、今後のバージョンで以下のことができるようになる予定です（実装の難易度やアプリの方向性によって変更される可能性があります）。</p>
+
+<ul>
+<li><p>Qiita:Team を横断した記事検索</p></li>
+<li><p>記事の既読管理</p></li>
+<li><p>記事へのコメント追加</p></li>
+</ul>
+
+
+<p>一方で以下のことは今後もできるようにならない予定です。</p>
+
+<ul>
+<li>Qiita:Team への記事投稿</li>
+</ul>
+
+
+<p>これは主に、複数ある Qiita:Team で投稿先のチームを間違える危険を避けるためです。</p>
+
+<h2>Qiita Team Viewer の技術選定</h2>
+
+<p>ここからは素人がアプリを開発する上で考えたことを記録として残しておこうと思います。</p>
+
+<p>今回アプリを作るにあたって最初に考えたのは、 <strong>兼ねてより興味のあった Electron を使ってみよう</strong> ということです。</p>
+
+<p>ネイティブアプリがよかったのと、後々 Windows, Linux にも対応したかったということでちょうど良さそうに思いました。 NW.js などの類似の選択肢もありましたが、初めて触るジャンルということもあり現状で一番情報が多そうな Electron にしました。</p>
+
+<p>最初は Electron の簡単なアプリをチュートリアルなどを参考に作り、そのアプリ上で Qiita の API を実行して結果を得るだけのプログラムを書きました。そこから、実際にアプリを作っていく上で必要なことを考えました。</p>
+
+<ul>
+<li><p>Qiita の API をどう叩くか</p>
+
+<ul>
+<li><p>こういうのは大抵 API を扱うライブラリがある</p></li>
+<li><p>公式が提供している <a href="https://github.com/increments/qiita-js">qiita-js</a> を使うことにした</p>
+
+<ul>
+<li><p>後に判明したことだが、 qiita-js は Qiita API v2 に追随できておらず、一部の API を叩けなかった</p></li>
+<li><p>qiita-js が対応していない部分だけ温かみのあるリクエストになってしまった 😢</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>どの JS フレームワークを使うか</p>
+
+<ul>
+<li><p>フレームワークを使わないのはただの苦行っぽい</p></li>
+<li><p>使ったことのない React か Vue.js にしようと思って双方を軽く調べて「この時期に始めるなら Vue.js かな」って感じで選んだ（勘です）</p></li>
+</ul>
+</li>
+<li><p>状態管理</p>
+
+<ul>
+<li>Vue.js 使うなら Vuex を使えばいいのかなと安易に選択（他の選択肢がいまいちわからなかった）</li>
+</ul>
+</li>
+<li><p>CSS フレームワーク</p>
+
+<ul>
+<li><p>使うかどうか、ってところからちょっと悩んだけど、自力で CSS 実装するのは素人には現実的ではないと判断</p></li>
+<li><p><strong>Bootstrap っていうものがあるらしい</strong> 程度の認識で軽く調べて Vue.js と相性良さそうで難しくなさそうな BULMA ってやつを選んだ</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>あとは「node module に electron-vue ってのがあるのかー」みたいな雑な感じで使ってみたり。</p>
+
+<p>専門職の人たちからすれば最適には程遠い選択だと思いますが、素人の手遊びとしては思ったより順調に試行錯誤しつつ実装が進み、なんとか現状まで持ってこれました。</p>
+
+<h2>新しく触れた技術要素</h2>
+
+<p>Electron を使うことを決めた時点で避けられない道だったのですが、ひとつひとつのことを実現するのに新しい技術要素に触れていくことになって新鮮な経験でした。実際に触れた新しいものは以下のとおり。</p>
+
+<ul>
+<li><p>Electron</p></li>
+<li><p>Vue.js</p></li>
+<li><p>Vuex</p></li>
+<li><p>BULMA</p></li>
+</ul>
+
+
+<p>どれもこれも全然知らないところからはじめて v0.1.0 をリリースするまで約1ヶ月。バッドプラクティスと言われるような使い方をしている箇所もあるかもしれないけど、なんとか使えるレベルまで持ってこれました。わからないこと多すぎてかなり勉強になった気がする（それをいちいち書き留めておく余裕は残念ながらなかったけれど）。</p>
+
+<h2>その他感想とか</h2>
+
+<p>できればテストも書きたかったけれど、特に仕事を休んだりもせず空いた時間で進めるには、試行錯誤しながら動くものを作るので精一杯でした。まあ、テスト自体は後からでも追加できるのでモチベーションが続けば。</p>
+
+<p>今後はドッグフーディングしつつ、検索機能とか追加していければなあと思ってます。けど、他にもやるべきことがあるので、ここから先はゆっくり進めていこうかと。</p>
+
+<p>あと、今回の開発で（僕みたいな人間にとっての） CSS フレームワークの強力さを思い知ったので、ブログのデザインとかアップデートしていきたいですね。</p>
+
+<h2>Qiita Team Viewer を作るにあたって参考にしたサイト</h2>
+
+<ul>
+<li><p>Qiita</p>
+
+<ul>
+<li><p><a href="https://qiita.com/api/v2/docs">Qiita API v2ドキュメント - Qiita:Developer</a></p></li>
+<li><p><a href="https://github.com/increments/qiita-js">increments/qiita-js: Qiita API v2 client for browser and node</a></p></li>
+</ul>
+</li>
+<li><p>node.js</p>
+
+<ul>
+<li><p><a href="https://q-az.net/node-js-file-read-write-append-unlink/">node.jsでファイルの読み込み、新規作成、上書き、追記、削除 | q-Az</a></p></li>
+<li><p><a href="http://mk.hatenablog.com/entry/2013/09/18/003944">Node.jsの例外処理（承前：なぜ例外処理が必要なのか） - まさたか日記</a></p></li>
+</ul>
+</li>
+<li><p>Electron</p>
+
+<ul>
+<li><p><a href="https://electronjs.org/docs/development/build-instructions-osx">ビルド手順 (macOS) | Electron</a></p></li>
+<li><p><a href="https://electronjs.org/docs/development/releasing">リリース | Electron</a></p></li>
+<li><p><a href="https://imfly.gitbooks.io/electron-docs-gitbook/jp/">Introduction · Electron docs gitbook</a></p></li>
+<li><p><a href="https://qiita.com/oniatsu/items/98851e0463dfe83f04b0">Electron + Travis で楽々ビルド・リリースする最強のデスクトップアプリ開発 - Qiita</a></p></li>
+<li><p><a href="https://syon.github.io/refills/rid/1499505/">HTTP×Electronアプリのひな形の作り方から配布まで | Refills</a></p></li>
+<li><p><a href="https://qiita.com/nyanchu/items/15d514d9b9f87e5c0a29">30分で出来る、JavaScript (Electron) でデスクトップアプリを作って配布するまで - Qiita</a></p></li>
+<li><p><a href="https://nulab-inc.com/ja/blog/typetalk/3-points-for-releasing-production-electron-app/">Electronアプリをプロダクトとして「正しく」リリースするために必要な3つのこと | ヌーラボ</a></p></li>
+<li><p><a href="https://kana-linux.info/electron/electron%E3%81%A7%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%BC%E3%82%92%E9%9D%9E%E8%A1%A8%E7%A4%BA%E3%81%AB%E3%81%99%E3%82%8B">Electronでスクロールバーを非表示にする | カナのLinux</a></p></li>
+<li><p><a href="https://github.com/SimulatedGREG/electron-vue">SimulatedGREG/electron-vue: An Electron &amp; Vue.js quick start boilerplate with vue-cli scaffolding, common Vue plugins, electron-packager/electron-builder, unit/e2e testing, vue-devtools, and webpack.</a></p></li>
+<li><p><a href="https://simulatedgreg.gitbooks.io/electron-vue/content/ja/">導入 · electron-vue</a></p></li>
+<li><p><a href="https://github.com/YuheiNakasaka/vue-twitter-client">YuheiNakasaka/vue-twitter-client: Twitter client created with Vue.js + Electron</a></p></li>
+<li><p><a href="https://qiita.com/1ntegrale9/items/6e233f03b8cbff0b3c76">2017年度版 electron-vueで始めるVue.js - Qiita</a></p></li>
+<li><p><a href="https://qiita.com/nagisio/items/259bef1748a4db8e0af6">Re:ゼロから始めるElectron開発生活 - Qiita</a></p></li>
+<li><p><a href="https://qiita.com/kurimeg/items/1736ab05dde5d8f8973c">フロントエンド開発初心者がelectron-vueでアプリをつくってみた　その２～実装編～ - Qiita</a></p></li>
+<li><p><a href="https://github.com/manosim/gitify">manosim/gitify: GitHub Notifications on your desktop.</a></p></li>
+</ul>
+</li>
+<li><p>Vue.js</p>
+
+<ul>
+<li><p><a href="https://jp.vuejs.org/v2/guide/index.html">はじめに — Vue.js</a></p></li>
+<li><p><a href="https://scrapbox.io/vue-yawaraka">やわらかVue.js - Scrapbox</a></p></li>
+</ul>
+</li>
+<li><p>Vuex</p>
+
+<ul>
+<li><p><a href="https://vuex.vuejs.org/ja/">Introduction · Vuex</a></p></li>
+<li><p><a href="http://chibinowa.net/note/vuejs/vue-14.html">Vue.js と Vuex を使った簡単なメンバー管理フォームを作る | Cubix</a></p></li>
+<li><p><a href="https://webmanab-html.com/tip/vue-vuex/">Vue.js の状態管理ライブラリ Vuex のはじめかた -『Vue.js』 – webmanab.html／ウェブまなぶ</a></p></li>
+<li><p><a href="https://kana-linux.info/vue-js/vuex%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AEstate%E3%81%AE%E5%88%9D%E6%9C%9F%E5%8C%96%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">vuexでデータのstateの初期化するには | カナのLinux</a></p></li>
+<li><p><a href="https://qiita.com/suin/items/7331905a45a8ff80d4dd">Vuex：mapStateの書き方8パターン+11サンプルコード - Qiita</a></p></li>
+<li><p><a href="https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e">vue.js＋Vuexチュートリアル - Qiita</a></p></li>
+<li><p><a href="https://qiita.com/hirohero/items/771ac34b8213105e2d5f">Vueコンポーネント &amp; Vuex テンプレ - Qiita</a></p></li>
+</ul>
+</li>
+<li><p>BULMA</p>
+
+<ul>
+<li><a href="https://bulma.io/documentation/overview/start/">Get started with Bulma | Bulma: a modern CSS framework based on Flexbox</a></li>
+</ul>
+</li>
+</ul>
+
+                    </div>
+                </div>
+                
+                <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2018-04-07-set-github-assigns-to-custom-status.html">GitHub で assign されている Issue の件数を Slack の custom_status に表示する</a></h1>
+                    <div class="subtitle published">2018-04-07</div>
+                    <div class="content">
+                        <p>元ネタというか、インスパイアされたのは以下の記事。</p>
+
+<p><a href="https://inside.pixiv.blog/kana/3486">「おまえは今までレビューしたプルリクの数をおぼえているのか？」 - pixiv inside</a></p>
+
+<p>@kana1 さんの上記の記事では、依頼されているレビューの件数を表示することで、同僚にどれくらい忙しいか（レビュータスクが溜まっているか）を知ってもらって、レビュー依頼が集中しないようにしている。</p>
+
+<p>Slack の custom_status は前々から有効活用できそうだなーと思っていたけど、このアイデアはとても良いものだと思ったので自分に合う形にカスタマイズしてみた。</p>
+
+<p>僕の今の働き方だと、</p>
+
+<ul>
+<li><p>複数の GitHub organization に所属している</p></li>
+<li><p>複数の Slack Team に所属している</p></li>
+<li><p>レビュー依頼は Slack bot が通知してくれたり、デイリーでレビュー依頼件数を教えてくれるチャンネルがある</p></li>
+<li><p>GitHub の Issue に対してマネージャが assign してくれたり、自分で Issue を流し見たりして良さそうなものを self-assign する</p></li>
+</ul>
+
+
+<p>という感じなので、レビューの数ではなく Issue の数を可視化することにした。</p>
+
+<h2>どこでどうやって動かすか</h2>
+
+<p>@kana1 さんの用途では、 Slack のチャンネルを監視して custom_status に対して get/set を行っている。</p>
+
+<p>僕の用途ではチャンネルの監視は必要なくて、リアルタイムじゃなくて良いので定期的に Issue の件数を数えてもらえればそれで良い。</p>
+
+<p>さらに、これだけのためにサーバを用意するのとかはとても面倒だったので Google Apps Script で全部やることにした。</p>
+
+<p>GAS では一定時間ごとに実行するトリガーを設定できるため、定期実行は GAS に任せることができる。</p>
+
+<h2>GitHub から assigned Issue の件数を取得する</h2>
+
+<p>僕は複数の organization に所属していて、それぞれに対応する Slack Team に所属しているので、「ある organization のリポジトリに紐づく assigned Issues の件数を、対応する Slack Team の custom_status に設定」することが目標になる。</p>
+
+<p>GitHub の API では以下の URL で目的の情報が取得できる。</p>
+
+<pre><code>
+https://api.github.com/orgs/{:org}/issues
+</code></pre>
+
+<p>特にクエリパラメータを設定しなくても、初期状態で self-assigned かつ open な Issue のリストが取れるためこれで良い。</p>
+
+<p>当然 API を叩くために token が必要。 scope はそんなに広くなくてよくて、 repo だけチェックしておけばよい。</p>
+
+<p>GAS で API を叩く際には UrlFetchApp.fetch を使えば良いらしい（このあたり node.js のモジュールとかそのまま使えないのかな？）。</p>
+
+<h2>Slack の custom_status を設定する</h2>
+
+<p>assigned Issues の件数がとれたら、件数に合わせて custom_status を設定したい。</p>
+
+<p>基本方針は @kana1 さんのものと同じく10件までは件数を表示して、10件を超えたら溢れている感のある絵文字を表示すれば良さそう。</p>
+
+<p>Slack の API はチームごとに token が取れるので、 GitHub organization に対応するチームの token を用意しておく。</p>
+
+<p>Slack の API はクエリパラメータに token とセットしたい内容を与えてリクエストを送れば良い。</p>
+
+<p>今回のケースでは以下のような URL を叩くことになる。</p>
+
+<pre><code>
+https://slack.com/api/users.profile.set?token={:token}&amp;profile={:data}
+</code></pre>
+
+<p><code>data</code> の部分にはセットしたい値を URL エンコードされた JSON を与える。以下のような形になる。</p>
+
+<pre><code class="json">
+{
+
+    status_emoji: emoji,
+
+    status_text: text
+
+}
+</code></pre>
+
+<h2>定期的に実行する</h2>
+
+<p>GAS はトリガーを設定できる。僕の場合は15分ごとに実行するように設定している。</p>
+
+<p>これだけで15分毎に assigned Issues の件数を Slack の custom_status に設定できる。</p>
+                    </div>
+                </div>
+                
+            </section>
+        </div>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                &copy; footer
+            </div>
+        </footer>
+    </body>
+</html>
