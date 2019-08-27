@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,19 @@
                     <h1 class="title is-2">iOS の AdBlock アプリ Crystal は jQuery の colorbox を抑止する</h1>
                     <div class="subtitle published">2016-01-29</div>
                     <div class="content">
-                        Text::Markdown::Discount<77481056>
+                        <p>iOS 9 で搭載されたコンテンツブロック機能によって、 Safari に AdBlock アプリを連携させられるようになった。 AdBlock アプリといってもいろいろあって、ブロックするコンテンツの判断基準が異なったりする。</p>
+
+<p>今回問題になったのは Crystal という AdBlock アプリを有効にした Safari で、 colorbox によるモーダル表示ができないことだ。モーダル表示といえば、画像を拡大して表示したり、確認ダイアログを出したりと、様々な用途で用いられている。</p>
+
+<p>Crystal を導入されている方は colorbox のデモページで試してみると良い。</p>
+
+<p><a href="http://www.jacklmoore.com/colorbox/example1/">colorbox example</a></p>
+
+<p>回避するには、同様のことができる他のプラグインを使うのが現実的だろう。 Magnific Popup は Crystal に阻害されずちゃんと動くことを確認した。</p>
+
+<p><a href="http://dimsemenov.com/plugins/magnific-popup/">Magnific Popup</a></p>
+
+<p>AdBlock アプリは、どのような条件でブロック対象とみなしているかがブラックボックスになっていて、広告ではない（ブロックされてほしくない）情報がブロックされることがある。たとえば Crystal が有効だと Google Analytics による計測が正常に行えないのは周知の事実だ。とはいえ、ユーザの快適性のためにコンテンツブロックしているのであれば、今後判定条件は変わっていく（精度をあげていく）と思うし、ここに書いたような現象もいずれ解消される可能性はある。</p>
                     </div>
                     <div class="subtitle published">2016-01-29 12:16:44.125647 JST</div>
                 </div>
@@ -36,7 +48,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

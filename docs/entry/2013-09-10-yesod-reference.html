@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,40 @@
                     <h1 class="title is-2">Yesod 使ってみて参考になったサイト</h1>
                     <div class="subtitle published">2013-09-10</div>
                     <div class="content">
-                        Text::Markdown::Discount<75768016>
+                        <p>自分用メモ的な位置づけ。</p>
+
+<h3>Yesodをnginxで動かすときのnginx.conf</h3>
+
+<p><a href="http://qiita.com/suztomo/items/ecaaa402e555a416afe7">http://qiita.com/suztomo/items/ecaaa402e555a416afe7</a></p>
+
+<p>できれば直接80番をYesodアプリに割り当てて、nginxでそれ以外をコントロール、という形にしたかったけど、
+やり方わからなかったので、別ポートを指定して proxy_pass で処理した。</p>
+
+<h3>プロダクション向けのビルド</h3>
+
+<p><a href="http://d.hatena.ne.jp/thimura/20111117/1321480728">http://d.hatena.ne.jp/thimura/20111117/1321480728</a></p>
+
+<pre><code>$ yesod build
+</code></pre>
+
+<p>でできるのかと思いきや、それとこれとは全く別のようで。</p>
+
+<pre><code>$ cabal configure -fproduction
+$ cabal build
+</code></pre>
+
+<p>が正解らしい。このあたりちゃんと押さえられていないの良くないですね。</p>
+
+<h3>プロダクションモードでの実行</h3>
+
+<p>これはどこかのサイトを参考にしたわけではないけど、ついでに。</p>
+
+<p>deploy/Procfile を読んだら末尾に書いてあったのを参考に、実行時にポートの指定をしないなら、</p>
+
+<pre><code>$ ./dist/build/{$app}/{$app} production
+</code></pre>
+
+<p>で良いっぽい。</p>
                     </div>
                     <div class="subtitle published">2013-09-10 01:08:39.849838 JST</div>
                 </div>
@@ -36,7 +69,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

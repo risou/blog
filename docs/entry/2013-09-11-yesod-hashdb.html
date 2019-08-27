@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,35 @@
                     <h1 class="title is-2">Yesod で HashDB を用いた認証の実装</h1>
                     <div class="subtitle published">2013-09-11</div>
                     <div class="content">
-                        Text::Markdown::Discount<75767920>
+                        <p>基本的には以下のページを見ながら実装すれば良いと思う。</p>
+
+<p><a href="http://hackage.haskell.org/packages/archive/yesod-auth/1.2.1/doc/html/Yesod-Auth-HashDB.html">http://hackage.haskell.org/packages/archive/yesod-auth/1.2.1/doc/html/Yesod-Auth-HashDB.html</a></p>
+
+<p>たとえば、以下のようにテーブルを作っておく。</p>
+
+<pre><code>User
+    user Text
+    password Text
+    salt Text
+    UniqueUser user
+    deriving
+</code></pre>
+
+<p>salt を適用したパスワードのハッシュ値は sha1sum で得ることができるので、これを手動で DB に格納してやればよい。 sqlite3 なら、</p>
+
+<pre><code>$ sqlite3
+sqlite&gt; insert into user values (1, "username", "salt+password''s hash", "salt");
+</code></pre>
+
+<p>とする。</p>
+
+<p>ログイン機能は Yesod.Auth が提供してくれているので getAuthR の実装は不要。</p>
+
+<p>あとは、認可が必要な機能の最初で、 maybeAuthId や requireAuthId などを適宜呼んでやればよい。</p>
+
+<pre><code>getSecretR = do
+    req &lt;- requireAuthId
+</code></pre>
                     </div>
                     <div class="subtitle published">2013-09-11 01:38:45.103145 JST</div>
                 </div>
@@ -36,7 +64,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

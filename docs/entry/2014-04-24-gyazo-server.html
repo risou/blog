@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,23 @@
                     <h1 class="title is-2">Gyazoサーバを立てた話</h1>
                     <div class="subtitle published">2014-04-24</div>
                     <div class="content">
-                        Text::Markdown::Discount<82176624>
+                        <p>大した話ではなく、自分用に Gyazo のサーバを立てた。今使ってるサーバの1つにインストールして動かしている、というだけの話。</p>
+
+<p>以下の記事を参考にしました。<br/>
+良質な記事と gyazoserver に感謝。</p>
+
+<p><a href="http://rimtty.hatenablog.com/entry/2014/03/23/113958">さくらVPSにgyazo+sinatra+nginxでオレgyazoを構築</a></p>
+
+<p>上記記事に書いてある通りにすれば良いのだけれど、一箇所だけ詰まったところがあったのでメモ。</p>
+
+<p><em>db ディレクトリを作成すること</em></p>
+
+<p>それだけ。これをやっておかないと、</p>
+
+<pre><code>Errno::ENOENT - No such file or directory - db/id:
+</code></pre>
+
+<p>とかでてくる。</p>
                     </div>
                     <div class="subtitle published">2014-04-24 01:24:01.600789 JST</div>
                 </div>
@@ -36,7 +52,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

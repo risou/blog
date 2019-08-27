@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,72 @@
                     <h1 class="title is-2">「マヨイドーロ問題」を Perl 6 で解く（そして挫折へ）</h1>
                     <div class="subtitle published">2015-12-17</div>
                     <div class="content">
-                        Text::Markdown::Discount<77850176>
+                        <h3>「マヨイドーロ問題」とは</h3>
+
+<p><a href="hyuki.com/codeiq/#c19">マヨイドーロ問題</a></p>
+
+<p>始点が1つ、終点が2つある経路上に方向転換が可能なポイントがいくつか用意されている。問題となるのは、 <strong>方向転換できる回数の上限</strong> に対して、終点のうちの片方にたどり着く移動ルートは何通りあるか。</p>
+
+<h3>解き方</h3>
+
+<p>この記事の本題ではないため、解き方、考え方について詳細には触れない。</p>
+
+<p><strong>方向転換できる回数の上限</strong> を <em>N</em> として、 <em>N</em> に小さな値を入れて試していくと、解の規則性が見えてくる。</p>
+
+<p>便宜上、終点の片方に到達する移動ルートの数（解）を <em>Y</em>、もう片方に到達する移動ルートの数を <em>Z</em> と記す。</p>
+
+<ul>
+<li><em>N</em> を1増やしたとき、偶数→奇数への増加であれば <em>Y</em> のみが増え、奇数→偶数への増加であれば <em>Z</em> のみが増える</li>
+<li><em>N</em> を増やした時の <em>Y</em> あるいは <em>Z</em> の増加量はフィボナッチ数と関係している</li>
+</ul>
+
+
+<p>この問題とフィボナッチ数の関連についての詳細は出題者の解説をご覧いただきたい。</p>
+
+<h3>Perl 6 での解答算出プログラム</h3>
+
+<p><em>N</em> から <em>Y</em> を算出する（算出する際にフィボナッチ数を用いる）だけの簡単なプログラムだ。</p>
+
+<pre><code>my @fib = (1, 1, *+* ... *);
+
+for $*IN.lines {
+    if ($_ == 0) {
+        say 0;
+    } else {
+        my $i = $_ % 2 == 1 ?? $_ + 1 !! $_;
+        say @fib[^$i].reduce(*+*);
+    }
+}
+</code></pre>
+
+<p>解を求める分にはこれで十分である。実際には、より計算量の少ない解法があったが僕は解説を見るまで気づかなかったので、提出したのは上記のコードである。</p>
+
+<p>さて、上記のコードを CodeIQ の回答システムで実行するとどうなったか。</p>
+
+<p><strong>Time Limit Exceeded</strong> だ。</p>
+
+<p>2015年現在、クリスマスにリリースを控えた Perl 6 は他の言語の実行環境と比較するとまだまだ遅い。とはいえ、自分の手元ではTLEになるほどの時間はかからなかった。そして気づく。</p>
+
+<p>CodeIQ の回答システムで使われている Perl 6 の実行環境は <strong>rakudo-2010.08</strong> であるということに。</p>
+
+<p>5年前の Rakudo ……。僕は知っている。その遅さを。</p>
+
+<h3>そして諦めた</h3>
+
+<p>実行環境の制約はどうしようもない。僕は結局 Haskell で書きなおしたコードを提出して、問題をクリアした。</p>
+
+<h3>&ldquo;より計算量の少ない解法"ではどうだったか</h3>
+
+<p>先に書いたが、僕が最初に提出した解法より、出題者の解説に掲載されているロジックの方が計算量が少ない。</p>
+
+<p>試さずにはいられなかった。</p>
+
+<pre><code>僕「これなら、あるいは……！」
+CodeIQ(rakudo-2010.08)「……TLE」
+僕「ですよねー」
+</code></pre>
+
+<p>完</p>
                     </div>
                     <div class="subtitle published">2015-12-17 11:47:12.75823 JST</div>
                 </div>
@@ -36,7 +101,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

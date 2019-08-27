@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,157 @@
                     <h1 class="title is-2">YAPC::Kansai 2017 Osaka の記録、あるいは最近の YAPC について考えていること</h1>
                     <div class="subtitle published">2017-03-07</div>
                     <div class="content">
-                        Text::Markdown::Discount<97203840>
+                        <p>行ってきた。</p>
+
+<p><a href="http://yapcjapan.org/2017kansai/">YAPC::Kansai 2017 Osaka</a></p>
+
+<h2>感想</h2>
+
+<p>箇条書きで。</p>
+
+<ul>
+<li>前夜祭
+
+<ul>
+<li>551 の豚まんとはわかってらっしゃる</li>
+<li>他人の開発環境、知らないツールとかテクニックがたくさんあって、ためになった</li>
+</ul>
+</li>
+<li>当日
+
+<ul>
+<li>A 会場広くてよかった</li>
+<li>B, C　は狭かった……
+
+<ul>
+<li>立ち見発生率が高かった</li>
+<li><a href="http://qiita.com/risou/items/5dec4214cf144869fae5">メモ</a> を残していたのだけど僕の担当は B, C　が多かったので、立ち見でメモとるのつらかった</li>
+</ul>
+</li>
+<li>スタッフの誘導が行き届いていてトラブル全然なくてよかった</li>
+<li>誰のトークを聞いてもレベルの高さに圧倒されて、自分との差に絶望させられた</li>
+</ul>
+</li>
+<li>自分のトーク
+
+<ul>
+<li>トークの内容、詰め込みすぎて時間足りなくてすいませんでした</li>
+<li>構成とか不自然だったりわかりづらくなかったか心配</li>
+<li>トークに満足してくれた人がいたのか心配
+
+<ul>
+<li>想定視聴者層じゃない人が多かったので、彼らの期待には応えられなかったと思う</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>自分のトーク</h2>
+
+<p><a href="https://www.slideshare.net/risou/first-step-of-performance-tuning">高速化の初歩</a> というタイトルで20分枠をいただいて話をしてきた。</p>
+
+<h3>トークすることになった経緯</h3>
+
+<p>そもそも、話すネタもないしプロポーザルを出すつもりなんて一切なかったのだけど、締め切りが数日後に迫ったある日、 <a href="https://twitter.com/moznion">moznion</a> 君に「YAPC 行くんですよね？　僕、キャッシュの話で応募したんですよ。 risou さん何か話さないんすか？　Perl 6 とか」みたいなことを言われたのがキッカケ。<br/>
+（結局 Perl 6 とは全然関係のない内容になったのだけど、今でも Perl 6 ネタを振ってくれる人がいて、嬉し恥ずかし）</p>
+
+<p>まあ枠が埋まらないことはないだろうけど、「応募したけど採択されなかったわー」ってつまらない自尊心を満たしとくかーと思って、ネタを考えて応募した。そしたら、何を間違えたか採択されてしまった。きっと採択されなかったトークの中には、僕が聞きたいトークもあったと思う。</p>
+
+<h3>トークの狙い</h3>
+
+<p>とはいえ、トークの内容はちゃんと考えていて、今回のトークは「初心者向け」のものとして用意をした（セッションの最初にも念押しした）。僕が初心者向けのトークをするのにはいくつか理由があって、</p>
+
+<ul>
+<li>プログラミングやソフトウェアエンジニアリングに興味がある人にリーチしたい</li>
+<li>仕事に絡む内容だと会社の許可が必要になる可能性がある
+
+<ul>
+<li>今回は個人として応募したので、会社の許可とかはとってない</li>
+</ul>
+</li>
+<li>そもそも僕の技術力では高レベルなトークなんてできない</li>
+</ul>
+
+
+<p>というのが主な理由。特に重視しているのが1つ目。</p>
+
+<p>YAPC は例年レベルの高いトーク、その時々のトレンドを扱ったトークが多くあり、毎回満足度が高いのだけど、一方で「これからプログラマ／エンジニアになりたい」「最近、技術に興味を持った」人向けのトークってそんなに多くないイメージがある。しかし、おそらくどんな専門技術についても言えることだと思うが、新規参入者への間口は広い方が良い。 YAPC で初心者向けのトークをやるというのは、そういった層にたいして「あなた方もこのカンファレンスのターゲットなんですよ」という意思表示になると思っている。</p>
+
+<p>端的に言えば、学生や現在別業界で仕事をしている人たちをターゲットにしたトークをしたかった。</p>
+
+<p>これにはもう一つ理由があって、あわよくば技術に興味がある将来有望な人を採用したいという気持ちがある。優秀なエンジニアの採用はなかなか難しくて、その一番の理由は母数の少なさにあると思っている。将来の優秀なエンジニアを大切にしていくことは、業界にとっても会社にとってもメリットのあることだと思うので積極的にやっていきたい、という思惑もある。<br/>
+（そういう意味で Perl 入学式は圧倒的に成果を出している素晴らしい勉強会だ）</p>
+
+<p>そういう狙いでトークを構成したので、同僚や現役のエンジニア、CPAN Author が聞きにくることを一切想定していなかった。</p>
+
+<h3>トークの結果</h3>
+
+<p>当日、小さい部屋ながらも立ち見がでる程度には聞きにきてくれた方がいて、とても嬉しかった。あのトークで得るものがあったという人が少しでもいれば幸い。</p>
+
+<p>ただ、中には先程書いたように完全に想定対象外の CPAN Author たちがいて、有名な <a href="https://twitter.com/dankogai">@dankogai</a> さんまで何故か聞きにきてくださっていた。その結果、以下のようなツイートが為されるような展開になってしまった。<br/>
+（言い換えれば dan さんにトーク中にツッコまれるという実績を解除したとも言える。めでたい？）</p>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">risou さん、Dan the interruptionにめげずに頑張っててすごい <a href="https://twitter.com/hashtag/yapcjapan?src=hash">#yapcjapan</a> <a href="https://twitter.com/hashtag/yapcjapanB?src=hash">#yapcjapanB</a></p>&mdash; songmu (@songmu) <a href="https://twitter.com/songmu/status/837851170349572096">2017年3月4日</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">risouさんのDanさん捌きが凄すぎる <a href="https://twitter.com/hashtag/yapcjapan?src=hash">#yapcjapan</a></p>&mdash; songmu (@songmu) <a href="https://twitter.com/songmu/status/837854961232830464">2017年3月4日</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>発表後から懇親会にかけて、僕のトークについて話しかけてくれる人のほとんどが dan さんの話に言及していたので、結局僕のトーク自体に関する感想はほとんど得られず、良かったのか悪かったのか全然わからなかった。</p>
+
+<p>もし誰かの役に立っていたのなら、次回以降も初級レベルのトークを応募していきたい。</p>
+
+<h3>最近の YAPC</h3>
+
+<p>昨年の北海道から国内で開催されている YAPC については、一昨年までの YAPC とは運営のメンバーが全然違う。そのせいか、結構運営方針の違いみたいなのを感じている。以下に僕が今の YAPC について思っていることを列挙する。</p>
+
+<ul>
+<li>公式サイトに情報がない
+
+<ul>
+<li>次の YAPC::Fukuoka のサイトとかもそうだけど、テーマすらわからない
+
+<ul>
+<li>ちなみにテーマはチケット販売ページに行けば書いてあるので、そこでわかる</li>
+</ul>
+</li>
+<li>前夜祭の場所や開始時間の情報も書いてない</li>
+</ul>
+</li>
+<li>スケジュールがわからない
+
+<ul>
+<li>公式サイトを見ても、いつごろにトークの募集があって、いつごろに締め切りがきて、LTがいつ募集開始して、っていうのが全くわからない</li>
+</ul>
+</li>
+<li>情報があまり流れてこない
+
+<ul>
+<li>Twitter の公式アカウントとかに流れてる情報、一度見逃すとフォローしてる人の誰かが RT してくれない限り見つけられない</li>
+<li>ブログにグルメとか観光地の情報が大量にあって、イベント自体の情報を探しづらい</li>
+</ul>
+</li>
+<li>トークが決まる前にチケットが売り切れる
+
+<ul>
+<li>応募したトークが採択されたらスピーカーチケットがもらえるので一般チケットを買う必要がないのだけど、採択されなかったら一般チケットがないと参加できない</li>
+<li>トークが採択されるかわからないうちにチケットを買わないといけないので、チケットが重複するリスクがある</li>
+</ul>
+</li>
+</ul>
+
+
+<p>ただの不満みたいになってしまったが、批判する意図もないし改善を要求するつもりもない。たぶん僕みたいに思ってる人はほとんどいなくて（そういう発言をしてる人に会ったことがないので）、僕だけが気にしてることだと思うので、こういうマイノリティがいるっていうことを表明しておきたいだけ。</p>
                     </div>
                     <div class="subtitle published">2017-03-07 01:54:10.132764 JST</div>
                 </div>
@@ -36,7 +186,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>

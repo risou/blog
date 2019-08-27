@@ -11,11 +11,11 @@
         <section class="hero is-medium is-bold is-dark">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-1">blog title</h1>
+                    <h1 class="title is-1">risou's Lithograph</h1>
                 </div>
             </div>
         </section>
-        <div class="container column is-10 is-offset-1">
+        <div class="container">
             <nav class="level">
                 <div class="level-left"></div>
                 <div class="level-right">
@@ -28,7 +28,75 @@
                     <h1 class="title is-2">GitHub で assign されている Issue の件数を Slack の custom_status に表示する</h1>
                     <div class="subtitle published">2018-04-07</div>
                     <div class="content">
-                        Text::Markdown::Discount<103581248>
+                        <p>元ネタというか、インスパイアされたのは以下の記事。</p>
+
+<p><a href="https://inside.pixiv.blog/kana/3486">「おまえは今までレビューしたプルリクの数をおぼえているのか？」 - pixiv inside</a></p>
+
+<p>@kana1 さんの上記の記事では、依頼されているレビューの件数を表示することで、同僚にどれくらい忙しいか（レビュータスクが溜まっているか）を知ってもらって、レビュー依頼が集中しないようにしている。</p>
+
+<p>Slack の custom_status は前々から有効活用できそうだなーと思っていたけど、このアイデアはとても良いものだと思ったので自分に合う形にカスタマイズしてみた。</p>
+
+<p>僕の今の働き方だと、</p>
+
+<ul>
+<li>複数の GitHub organization に所属している</li>
+<li>複数の Slack Team に所属している</li>
+<li>レビュー依頼は Slack bot が通知してくれたり、デイリーでレビュー依頼件数を教えてくれるチャンネルがある</li>
+<li>GitHub の Issue に対してマネージャが assign してくれたり、自分で Issue を流し見たりして良さそうなものを self-assign する</li>
+</ul>
+
+
+<p>という感じなので、レビューの数ではなく Issue の数を可視化することにした。</p>
+
+<h2>どこでどうやって動かすか</h2>
+
+<p>@kana1 さんの用途では、 Slack のチャンネルを監視して custom_status に対して get/set を行っている。<br/>
+僕の用途ではチャンネルの監視は必要なくて、リアルタイムじゃなくて良いので定期的に Issue の件数を数えてもらえればそれで良い。</p>
+
+<p>さらに、これだけのためにサーバを用意するのとかはとても面倒だったので Google Apps Script で全部やることにした。<br/>
+GAS では一定時間ごとに実行するトリガーを設定できるため、定期実行は GAS に任せることができる。</p>
+
+<h2>GitHub から assigned Issue の件数を取得する</h2>
+
+<p>僕は複数の organization に所属していて、それぞれに対応する Slack Team に所属しているので、「ある organization のリポジトリに紐づく assigned Issues の件数を、対応する Slack Team の custom_status に設定」することが目標になる。</p>
+
+<p>GitHub の API では以下の URL で目的の情報が取得できる。</p>
+
+<pre><code>https://api.github.com/orgs/{:org}/issues
+</code></pre>
+
+<p>特にクエリパラメータを設定しなくても、初期状態で self-assigned かつ open な Issue のリストが取れるためこれで良い。</p>
+
+<p>当然 API を叩くために token が必要。 scope はそんなに広くなくてよくて、 repo だけチェックしておけばよい。</p>
+
+<p>GAS で API を叩く際には UrlFetchApp.fetch を使えば良いらしい（このあたり node.js のモジュールとかそのまま使えないのかな？）。</p>
+
+<h2>Slack の custom_status を設定する</h2>
+
+<p>assigned Issues の件数がとれたら、件数に合わせて custom_status を設定したい。</p>
+
+<p>基本方針は @kana1 さんのものと同じく10件までは件数を表示して、10件を超えたら溢れている感のある絵文字を表示すれば良さそう。</p>
+
+<p>Slack の API はチームごとに token が取れるので、 GitHub organization に対応するチームの token を用意しておく。<br/>
+Slack の API はクエリパラメータに token とセットしたい内容を与えてリクエストを送れば良い。<br/>
+今回のケースでは以下のような URL を叩くことになる。</p>
+
+<pre><code>https://slack.com/api/users.profile.set?token={:token}&amp;profile={:data}
+</code></pre>
+
+<p><code>data</code> の部分にはセットしたい値を URL エンコードされた JSON を与える。以下のような形になる。</p>
+
+<pre><code class="json">{
+    status_emoji: emoji,
+    status_text: text
+}
+</code></pre>
+
+<h2>定期的に実行する</h2>
+
+<p>GAS はトリガーを設定できる。僕の場合は15分ごとに実行するように設定している。</p>
+
+<p>これだけで15分毎に assigned Issues の件数を Slack の custom_status に設定できる。</p>
                     </div>
                     <div class="subtitle published">2018-04-07 00:13:53.002221 JST</div>
                 </div>
@@ -36,7 +104,7 @@
         </div>
         <footer class="footer">
             <div class="content has-text-centered">
-                &copy; footer
+                Copyright &copy; 2019- risou All Rights Reserved.
             </div>
         </footer>
     </body>
