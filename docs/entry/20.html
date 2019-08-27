@@ -28,7 +28,84 @@
                     <h1 class="title is-2">git submodule覚え書き</h1>
                     <div class="subtitle published">2014-03-06</div>
                     <div class="content">
-                        Text::Markdown::Discount<109157168>
+                        <p><code>git submodule</code>を使っていると、「あれ、これどうしたらいいんだ……？」と悩むシーンが結構あるので、自分のために記録する。</p>
+
+<p><code>git version 1.8.5.2</code>で確認した。</p>
+
+<p><em>もし、この記事をご覧になるような奇特な方がいて、内容の間違い等に気づかれたら、 <a href="http://twitter.com/risou">@risou</a> に教えてくれると幸いです。</em></p>
+
+<h3><code>git submodule</code> が使われているリポジトリを clone したけど中身がない</h3>
+
+<p><code>git clone</code> しただけでは、submodule の中身はとれていないので、中身を取得する。</p>
+
+<pre><code>git submodule update --init
+</code></pre>
+
+<h3>submodule の中で submodule が使われている</h3>
+
+<p>リポジトリBを<code>git submodule add</code>しているリポジトリAを clone 。<br/>
+ちゃんと <code>git submodule update --init</code> したけど、上手く動かない。<br/>
+よく見たらリポジトリBがリポジトリCを<code>git submodule add</code>してた。</p>
+
+<p>リポジトリBのルートディレクトリに移動して<code>git submodule update --init</code>でも良いけれど、<br/>
+リポジトリAからまとめてとりたい場合は以下のようにする。</p>
+
+<pre><code>git submodule update --init --recursive
+</code></pre>
+
+<h3>submodule を削除したい</h3>
+
+<p>submodule の削除は以前から面倒で、最近のバージョンでは少し改善されているものの、やはりまだ面倒。</p>
+
+<p>submodule に関する情報は4つある。</p>
+
+<ul>
+<li>.git/config の submodule セクション</li>
+<li>.gitmodules の submodule セクション</li>
+<li>submodule のディレクトリ</li>
+<li>.git/modules にある submodule のディレクトリ</li>
+</ul>
+
+
+<p>このうち、<code>git submodule deinit</code>で消せるのは1つ目だけのようだ。<br/>
+2つ目は<code>git config -f --remove-section</code>で消せる。<br/>
+残念ながら後は直接消すしかない。</p>
+
+<p>まとめると以下のようになる。<br/>
+<code>&lt;submodule&gt;</code> は submodule のパスを示すものとする。</p>
+
+<pre><code>git submodule deinit &lt;submodule&gt;
+git config -f .gitmodules --remove-section submodule.&lt;submodule&gt;
+git rm --cached &lt;submodule&gt;
+rm -r &lt;submodule&gt;
+rm -r .git/modules/&lt;submodule&gt;
+</code></pre>
+
+<p>3行目と4行目は、まとめて<code>git rm -f &lt;submodule&gt;</code>でも良い。</p>
+
+<h3>submodule したリポジトリの中身を最新にしたい</h3>
+
+<p>submodule もリポジトリなので、対象のルートディレクトリに移動して、<br/>
+<code>git pull</code>すれば最新を取得できる。</p>
+
+<p>が、複数のリポジトリに対してまとめてやりたい場合は以下のようにすると楽。</p>
+
+<pre><code>git submodule foreach git pull
+</code></pre>
+
+<h3>submodule したリポジトリの中身を間違えて更新してしまった</h3>
+
+<p>試しに使ってる <a href="http://atom.io/">Atom</a> でファイル内で replace All しようとして、<br/>
+間違えてリポジトリの全てのファイルに replace All してしまった。</p>
+
+<p>この時、 submodule の中身も replace されてしまっているので戻す必要がある。<br/>
+ちなみに Atom でのこの手の undo のやり方誰か教えてください。<br/>
+（普通に undo するとアクティブなファイルでの最後の変更だけが戻る）</p>
+
+<p>これも上記と同様にすれば早い。</p>
+
+<pre><code>git submodule foreach git reset --hard
+</code></pre>
                     </div>
                     <div class="subtitle published">2014-03-06 12:50:52.252598 JST</div>
                 </div>

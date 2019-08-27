@@ -28,7 +28,61 @@
                     <h1 class="title is-2">Git で merge commit を revert したあと、再度 merge したい</h1>
                     <div class="subtitle published">2014-05-08</div>
                     <div class="content">
-                        Text::Markdown::Discount<89880496>
+                        <p>Git の merge は、「2つのブランチの共通の親を探し、そこから merge されるブランチのコミットを順に merge するブランチに適用」していくものだ。</p>
+
+<p>では、次のようなときどうするか。</p>
+
+<h3>ケース</h3>
+
+<p><img src="http://gyazo.risouf.net/82a17686.png" alt="とあるコミットの歴史" /></p>
+
+<p>上の画像において、それぞれのコミットは以下の通りである。</p>
+
+<ul>
+<li>S：分岐元のコミット</li>
+<li>M, G：マージコミット</li>
+<li>R：マージコミット（M）の revert コミット</li>
+<li>A, B, C, D：通常のコミット</li>
+</ul>
+
+
+<p>上記グラフができるまでの流れは、</p>
+
+<ol>
+<li>マージを行う（Mコミットが作られる）</li>
+<li>先のマージはまだ早かったと気づき、 revert する（Rコミットが作られる）</li>
+<li>しばらく経ち、マージしても良くなったので再度マージを行う（Gコミットが作られる）</li>
+</ol>
+
+
+<p>という感じだ。</p>
+
+<p>さて、このときGコミットには、A、B、C、Dの4つのコミットが適用されていて欲しい。<br/>
+しかし実際には、CとDの2つだけしか適用されない。</p>
+
+<p>なぜなら、Gのマージコミットの共通はBコミットだからだ。<br/>
+そしてBコミットはその後Rコミットで revert されている。</p>
+
+<p>もちろん、CとDの2つだけが適用されれば良い場合は何の問題もない。<br/>
+しかし、AとBも含まれてほしい場合はどうすれば良いか。</p>
+
+<h3>解決方法</h3>
+
+<p>Twitter でこの疑問を呟いたところ、 <a href="http://twitter.com/kana1">@kana1</a>さんに解法を教えていただいた。</p>
+
+<blockquote class="twitter-tweet" data-conversation="none" lang="en"><p><a href="https://twitter.com/risou">@risou</a> <a href="https://t.co/Pq9nfnKbeM">https://t.co/Pq9nfnKbeM</a> まさにこれに解説されてる通りのシチュエーションですね。risouさんの図のRはgit revert -m1 Mで作られたと思います。Dをマージする時はgit revert Rしてからgit merge Dだそうですよ。</p>&mdash; Kana Natsuno (@kana1) <a href="https://twitter.com/kana1/statuses/459705026722549760">April 25, 2014</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>どうやら2008年に同じ問題に遭遇し、解法が提供されるまでの一連のやりとりがあったようだ。</p>
+
+<p>簡単に説明すると、Gのマージを行う前に <strong>revert コミットを revert</strong> すれば良い。<br/>
+わかってしまえば簡単なことだった。<br/>
+つくづく Git は良くできていると思わされたのだった。</p>
+
+<p># そもそもの問題として、より良いブランチの運用方法があるような気はしているが、それについては現場で模索中である。</p>
                     </div>
                     <div class="subtitle published">2014-05-08 02:15:56.116753 JST</div>
                 </div>

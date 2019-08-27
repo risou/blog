@@ -28,7 +28,17 @@
                     <h1 class="title is-2">SKK は Ctrl+G が使えないと使いものにならない</h1>
                     <div class="subtitle published">2015-01-30</div>
                     <div class="content">
-                        Text::Markdown::Discount<112337280>
+                        <p><em>タイトルには「自分にとって」が不足している。また、 SKK 側のキーバインドを変更すれば以下の問題はそもそも起きない。</em></p>
+
+<p><a href="http://qiita.com/risou/items/e509ab9cd6ad92988021">Mac の Sublime Text 3 で SKK を快適に使う - Qiita</a> という Tips を書いた。 Sublime Text 3 だと Ctrl+G をアプリケーション側に奪われてキャンセルできなくてつらい……という問題を解消する方法だ。</p>
+
+<p>そもそも SKK でそんなに頻繁にキャンセルを使うのかというと、使う。詳しくは SKK について調べるなり試すなりしていただくのが良いかと思うが、その用途は大きく2つに別れる。1つは「変換のキャンセル」もう1つは「単語登録のキャンセル」だ。</p>
+
+<p>前者は <code>Backspace</code> や <code>x</code> でも同じことができるためたいした問題ではない。問題は後者だ。 SKK では、漢字への変換を行う際にマッチするものがなければ、自動的に単語登録モードに移行する。この単語登録モードはちょっとしたタイプミスでもしばしば目にすることになる。なぜなら、 SKK では送りがなの開始位置を明確に指定するからだ。たとえば「見える」と入力したければ、 <code>MiEru</code> とタイプすることになるが <code>Shift</code> を入れるタイミングがずれて <code>MieRu</code> となった場合、該当する漢字がデフォルトの辞書にはないため、単語登録モードに移行する。そして、単語登録モードに入ると、そこから戻るには「キャンセル」しかない。ここでは <code>Backspace</code> も <code>x</code> も効かない。そのため、 <code>Ctrl+G</code> は頻繁に使用される。</p>
+
+<p>ところが、この環境で Sublime Text 3 を使うと上記の問題が発生する(Sublime Text 2 でも同様の問題は起きると思う)。これを解決するのが上記リンク先に書いた設定だ。</p>
+
+<p>ちなみに、 Sublime Text 3 では <code>Ctrl+G</code> には行番号指定ジャンプが割り当てられている。最初、これを <code>Ctrl+G -&gt; Ctrl+G</code> に変更しようかと思ったが、1つ目の入力が <code>Ctrl+G</code> のため、やはり AquaSKK に <code>Ctrl+G</code> が到達しなかった。結局自分は <code>Shift+Ctrl+G</code> に行番号指定ジャンプを割り当てた。 SKK のキャンセルに比べれば使用頻度がかなり少ないのと、既に慣れているものよりこれから慣れるものの方が矯正しやすいはずなので、これで問題は起きないと思う。</p>
                     </div>
                     <div class="subtitle published">2015-01-30 09:43:26.982703 JST</div>
                 </div>

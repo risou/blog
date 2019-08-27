@@ -28,7 +28,23 @@
                     <h1 class="title is-2">Gyazoサーバを立てた話</h1>
                     <div class="subtitle published">2014-04-24</div>
                     <div class="content">
-                        Text::Markdown::Discount<86185248>
+                        <p>大した話ではなく、自分用に Gyazo のサーバを立てた。今使ってるサーバの1つにインストールして動かしている、というだけの話。</p>
+
+<p>以下の記事を参考にしました。<br/>
+良質な記事と gyazoserver に感謝。</p>
+
+<p><a href="http://rimtty.hatenablog.com/entry/2014/03/23/113958">さくらVPSにgyazo+sinatra+nginxでオレgyazoを構築</a></p>
+
+<p>上記記事に書いてある通りにすれば良いのだけれど、一箇所だけ詰まったところがあったのでメモ。</p>
+
+<p><em>db ディレクトリを作成すること</em></p>
+
+<p>それだけ。これをやっておかないと、</p>
+
+<pre><code>Errno::ENOENT - No such file or directory - db/id:
+</code></pre>
+
+<p>とかでてくる。</p>
                     </div>
                     <div class="subtitle published">2014-04-24 01:24:01.600789 JST</div>
                 </div>
