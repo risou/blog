@@ -25,6 +25,66 @@
             <section class="articles">
                 
                 <div class="article">
+                    <h1 class="title is-2"><a href="/entry/2019-09-06-new-original-blog-system.html">ブログシステムを一新した</a></h1>
+                    <div class="subtitle published">2019-09-06</div>
+                    <div class="content">
+                        <p>先日、社内 LT でブログ更新してないネタを使ったので、晴れて更新できるようになった。</p>
+
+<p>ということで、ブログのシステムを新しくした。<br/>
+見た目はもちろんだけどシステム自体も新規に作り直した。</p>
+
+<p>前作は Haskell 製だったが、今作は Perl 6 製。<br/>
+（とはいえ、どちらもブログシステム、というには圧倒的に機能が少ない。個人的に必要なものしか実装していないからだ）</p>
+
+<p>今作には <a href="https://github.com/risou/Lithograph">Lithograph</a> という名前をつけた。</p>
+
+<h3>なぜ Perl 6 を使ったか</h3>
+
+<p>完全に趣味。<br/>
+静的サイトジェネレータを作ろうと思ったとき、「それなら Perl 6 でもできそうだな」と思ったのが大きい。<br/>
+日々のタスクが少なくない中でいつやるかというと、だいたい帰省したときで、2018年の年末〜2019年正月あたりで作り始めたが完成させられず2019年夏の完成となった。</p>
+
+<h3>なぜ Lithograph という名前にしたか</h3>
+
+<p>静的サイトジェネレータにしたのも同じ理由だが、コンテンツとしてより長く生き長らえてほしいと思ったとき、いわゆる動的なブログシステムよりも静的サイトジェネレータを使って HTML を出力しておく方が良さそうだと思ったからだ。<br/>
+その発想に至る経緯で、「紙は便利だけど、石版に彫った方が当然長い年月を超えられる」ということに着目し、「僕が今欲しているのは、 Web における石版だな」と思ったことによる。<br/>
+（機会があればいつかどこかでこの思いを整理したい）</p>
+
+<h3>見た目の話</h3>
+
+<p>去年くらいに Electron アプリ作ってたときくらいに簡単で良いなと思った Bulma を使った。<br/>
+とはいえ、見た目の部分は利用者がそれぞれ好きにすれば良いことなので、このシステムが推奨するものではない。<br/>
+とりあえず僕以外に使う人はいないだろうという想定で僕が使いたいものを使った。</p>
+
+<p>というわりに、見た目を変える方法を含むカスタマイズ方法をどこにも記載していないので、そのうちドキュメントをちゃんと書かないといけない。</p>
+
+<h3>Perl 6 にして苦労はなかったか</h3>
+
+<p>これは当然いろいろあって、どこかで共有することもあるかもしれない。<br/>
+いくつか概要を書いておくと、</p>
+
+<ul>
+<li>RakudoStar2019.07 にすると <code>zef install YAMLish</code> が失敗する</li>
+<li>Perl 6 で大量の markdown ファイルをパースして HTML として保存していると途中で解放済みメモリを解放しようとして死ぬ
+
+<ul>
+<li>MoarVM になにか問題があるのか僕の Perl 6 の実装が良くないのか</li>
+<li>結局どうしようもなくて最後に shell に頼った</li>
+</ul>
+</li>
+<li><code>IO::Psth</code> に相対パスを与えてディレクトリを登っていこうとするとおかしなパスが生成される</li>
+<li>仕組み上 Travis CI を使って markdown を HTML にパースできるようにしているが、この処理の際に不定期に <code>zef install</code> に失敗して死ぬ</li>
+</ul>
+
+
+<p>といったつらみがあった。</p>
+
+<p>このあたりは時間があればもう少し深堀りしてみたい。<br/>
+といいつつ、次に触る時間を得たときにはバージョンが上がって解消している可能性もある（それは当然大歓迎です）。</p>
+                    </div>
+                </div>
+                
+                <div class="article">
                     <h1 class="title is-2"><a href="/entry/2019-05-13-use-emacs-on-alacritty.html">alacritty で Emacs を使う</a></h1>
                     <div class="subtitle published">2019-05-13</div>
                     <div class="content">
@@ -435,82 +495,6 @@ tmux でタブや分割に相当する機能が確立されているため、タ
 </li>
 </ul>
 
-                    </div>
-                </div>
-                
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2018-04-07-set-github-assigns-to-custom-status.html">GitHub で assign されている Issue の件数を Slack の custom_status に表示する</a></h1>
-                    <div class="subtitle published">2018-04-07</div>
-                    <div class="content">
-                        <p>元ネタというか、インスパイアされたのは以下の記事。</p>
-
-<p><a href="https://inside.pixiv.blog/kana/3486">「おまえは今までレビューしたプルリクの数をおぼえているのか？」 - pixiv inside</a></p>
-
-<p>@kana1 さんの上記の記事では、依頼されているレビューの件数を表示することで、同僚にどれくらい忙しいか（レビュータスクが溜まっているか）を知ってもらって、レビュー依頼が集中しないようにしている。</p>
-
-<p>Slack の custom_status は前々から有効活用できそうだなーと思っていたけど、このアイデアはとても良いものだと思ったので自分に合う形にカスタマイズしてみた。</p>
-
-<p>僕の今の働き方だと、</p>
-
-<ul>
-<li>複数の GitHub organization に所属している</li>
-<li>複数の Slack Team に所属している</li>
-<li>レビュー依頼は Slack bot が通知してくれたり、デイリーでレビュー依頼件数を教えてくれるチャンネルがある</li>
-<li>GitHub の Issue に対してマネージャが assign してくれたり、自分で Issue を流し見たりして良さそうなものを self-assign する</li>
-</ul>
-
-
-<p>という感じなので、レビューの数ではなく Issue の数を可視化することにした。</p>
-
-<h2>どこでどうやって動かすか</h2>
-
-<p>@kana1 さんの用途では、 Slack のチャンネルを監視して custom_status に対して get/set を行っている。<br/>
-僕の用途ではチャンネルの監視は必要なくて、リアルタイムじゃなくて良いので定期的に Issue の件数を数えてもらえればそれで良い。</p>
-
-<p>さらに、これだけのためにサーバを用意するのとかはとても面倒だったので Google Apps Script で全部やることにした。<br/>
-GAS では一定時間ごとに実行するトリガーを設定できるため、定期実行は GAS に任せることができる。</p>
-
-<h2>GitHub から assigned Issue の件数を取得する</h2>
-
-<p>僕は複数の organization に所属していて、それぞれに対応する Slack Team に所属しているので、「ある organization のリポジトリに紐づく assigned Issues の件数を、対応する Slack Team の custom_status に設定」することが目標になる。</p>
-
-<p>GitHub の API では以下の URL で目的の情報が取得できる。</p>
-
-<pre><code>https://api.github.com/orgs/{:org}/issues
-</code></pre>
-
-<p>特にクエリパラメータを設定しなくても、初期状態で self-assigned かつ open な Issue のリストが取れるためこれで良い。</p>
-
-<p>当然 API を叩くために token が必要。 scope はそんなに広くなくてよくて、 repo だけチェックしておけばよい。</p>
-
-<p>GAS で API を叩く際には UrlFetchApp.fetch を使えば良いらしい（このあたり node.js のモジュールとかそのまま使えないのかな？）。</p>
-
-<h2>Slack の custom_status を設定する</h2>
-
-<p>assigned Issues の件数がとれたら、件数に合わせて custom_status を設定したい。</p>
-
-<p>基本方針は @kana1 さんのものと同じく10件までは件数を表示して、10件を超えたら溢れている感のある絵文字を表示すれば良さそう。</p>
-
-<p>Slack の API はチームごとに token が取れるので、 GitHub organization に対応するチームの token を用意しておく。<br/>
-Slack の API はクエリパラメータに token とセットしたい内容を与えてリクエストを送れば良い。<br/>
-今回のケースでは以下のような URL を叩くことになる。</p>
-
-<pre><code>https://slack.com/api/users.profile.set?token={:token}&amp;profile={:data}
-</code></pre>
-
-<p><code>data</code> の部分にはセットしたい値を URL エンコードされた JSON を与える。以下のような形になる。</p>
-
-<pre><code class="json">{
-    status_emoji: emoji,
-    status_text: text
-}
-</code></pre>
-
-<h2>定期的に実行する</h2>
-
-<p>GAS はトリガーを設定できる。僕の場合は15分ごとに実行するように設定している。</p>
-
-<p>これだけで15分毎に assigned Issues の件数を Slack の custom_status に設定できる。</p>
                     </div>
                 </div>
                 

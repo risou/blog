@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <nav class="level">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <p class="level-item"><a href="/">top</a></p>
+                    <p class="level-item"><a href="/list.html">list</a></p>
+                </div>
+            </nav>
+            <section class="articles">
+                <div class="article">
+                    <h1 class="title is-2">ブログシステムを一新した</h1>
+                    <div class="subtitle published">2019-09-06</div>
+                    <div class="content">
+                        <p>先日、社内 LT でブログ更新してないネタを使ったので、晴れて更新できるようになった。</p>
+
+<p>ということで、ブログのシステムを新しくした。<br/>
+見た目はもちろんだけどシステム自体も新規に作り直した。</p>
+
+<p>前作は Haskell 製だったが、今作は Perl 6 製。<br/>
+（とはいえ、どちらもブログシステム、というには圧倒的に機能が少ない。個人的に必要なものしか実装していないからだ）</p>
+
+<p>今作には <a href="https://github.com/risou/Lithograph">Lithograph</a> という名前をつけた。</p>
+
+<h3>なぜ Perl 6 を使ったか</h3>
+
+<p>完全に趣味。<br/>
+静的サイトジェネレータを作ろうと思ったとき、「それなら Perl 6 でもできそうだな」と思ったのが大きい。<br/>
+日々のタスクが少なくない中でいつやるかというと、だいたい帰省したときで、2018年の年末〜2019年正月あたりで作り始めたが完成させられず2019年夏の完成となった。</p>
+
+<h3>なぜ Lithograph という名前にしたか</h3>
+
+<p>静的サイトジェネレータにしたのも同じ理由だが、コンテンツとしてより長く生き長らえてほしいと思ったとき、いわゆる動的なブログシステムよりも静的サイトジェネレータを使って HTML を出力しておく方が良さそうだと思ったからだ。<br/>
+その発想に至る経緯で、「紙は便利だけど、石版に彫った方が当然長い年月を超えられる」ということに着目し、「僕が今欲しているのは、 Web における石版だな」と思ったことによる。<br/>
+（機会があればいつかどこかでこの思いを整理したい）</p>
+
+<h3>見た目の話</h3>
+
+<p>去年くらいに Electron アプリ作ってたときくらいに簡単で良いなと思った Bulma を使った。<br/>
+とはいえ、見た目の部分は利用者がそれぞれ好きにすれば良いことなので、このシステムが推奨するものではない。<br/>
+とりあえず僕以外に使う人はいないだろうという想定で僕が使いたいものを使った。</p>
+
+<p>というわりに、見た目を変える方法を含むカスタマイズ方法をどこにも記載していないので、そのうちドキュメントをちゃんと書かないといけない。</p>
+
+<h3>Perl 6 にして苦労はなかったか</h3>
+
+<p>これは当然いろいろあって、どこかで共有することもあるかもしれない。<br/>
+いくつか概要を書いておくと、</p>
+
+<ul>
+<li>RakudoStar2019.07 にすると <code>zef install YAMLish</code> が失敗する</li>
+<li>Perl 6 で大量の markdown ファイルをパースして HTML として保存していると途中で解放済みメモリを解放しようとして死ぬ
+
+<ul>
+<li>MoarVM になにか問題があるのか僕の Perl 6 の実装が良くないのか</li>
+<li>結局どうしようもなくて最後に shell に頼った</li>
+</ul>
+</li>
+<li><code>IO::Psth</code> に相対パスを与えてディレクトリを登っていこうとするとおかしなパスが生成される</li>
+<li>仕組み上 Travis CI を使って markdown を HTML にパースできるようにしているが、この処理の際に不定期に <code>zef install</code> に失敗して死ぬ</li>
+</ul>
+
+
+<p>といったつらみがあった。</p>
+
+<p>このあたりは時間があればもう少し深堀りしてみたい。<br/>
+といいつつ、次に触る時間を得たときにはバージョンが上がって解消している可能性もある（それは当然大歓迎です）。</p>
+                    </div>
+                    <div class="subtitle published">2019-09-06T23:37:55.116921+09:00</div>
+                </div>
+            </section>
+        </div>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
