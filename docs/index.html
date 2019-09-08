@@ -15,21 +15,166 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <nav class="level">
-                <div class="level-left"></div>
-                <div class="level-right">
-                    <p class="level-item">top</p>
-                    <p class="level-item"><a href="/list.html">list</a></p>
-                </div>
-            </nav>
-            <section class="articles">
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item">top</p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2019-09-09-isucon9-qualifying.html">ISUCON 9 予選惨敗記録</a></h1>
+                        <div class="subtitle published">2019-09-09</div>
+                        <div class="content">
+                            <p>惨敗した。</p>
+
+<p><img src="/static/img/isucon9q.png" alt="" /></p>
+
+<p>当日のログもあまり残せておらず、記憶がすぐに劣化してしまいそうなので乱文になるかもしれないがここに記録しておく。</p>
+
+<h2>参加のきっかけ</h2>
+
+<p>社内の Slack で「興味ありそうな人がいれば出たい」という趣旨の発言をしたところ、反応があったのでさっとチームを組んで参加することにした。<br/>
+3人での参加だったが、当然この組み合わせは初だった（もっというと僕以外の2人は ISUCON 自体初参加だった）。</p>
+
+<h2>当日までの準備</h2>
+
+<p>仕事が忙しかったことを主な言い訳にするが、3人揃って時間を確保して過去問を解く、といったことはできなかった。</p>
+
+<p>何度か集まって話をする時間を設けることができ、そこで序盤の進め方や役割分担について話をしておいた。<br/>
+また、提示された環境で（インフラ担当の方に）インスタンスを立ててもらって鍵認証で SSH 接続できること、などは確認しておいた。<br/>
+当然だが、この時点で言語も選択していた。会社で使っているということもあり Ruby を選択した。</p>
+
+<h2>当日の動き</h2>
+
+<h3>集合〜セットアップ</h3>
+
+<p>同僚との参加だったので必然的にオフィスに集まることになった。<br/>
+休日はビルの施錠周りにややこしい部分があり、経験豊富な僕が解錠する役を請け負った<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>。</p>
+
+<p>実は我々以外にもう1チーム、同じオフィスを利用するチーム<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>がおり、そちらの皆さんのためにもあまり遅くならないようにオフィスを開ける必要があった。</p>
+
+<p>余裕をもって 8:30 頃に出社し、同じオフィスで参加する皆を迎え入れた。<br/>
+並行して3人が近い席で作業できるようにディスプレイやキーボードなどをセットアップしたり、ホワイトボード、会議用モニタ + Apple TV を座席近くに集めた。</p>
+
+<p>時間的には結構余裕を残して準備を終えられたと思う。</p>
+
+<h3>開始〜昼頃</h3>
+
+<p>開始してすぐに、インフラを担当してくれる方にインスタンスを立ててもらったり、鍵を配備してもらったりして、準備が整ったらまずは一度ベンチマークを走らせてもらった。</p>
+
+<p>並行してもう1人の同僚が初期コードを Git で管理管理できるようにしたりデプロイ周りを整えてくれたりした。</p>
+
+<p>僕はドキュメントを読み漁ったり、コードを軽く読んだりした。</p>
+
+<p>ベンチマークの結果が出たあたりで一度コミュニケーションを取り、各々の初手を相談して動きを決めた。</p>
+
+<p>この時間帯は MySQL のスロークエリを探して、インデックスを張ったりしていたと思う。<br/>
+並行して alp での計測結果をもとに <code>/users/transactions.json</code> の実装を調べたりしていたはずだ。</p>
+
+<p>結局、昼過ぎの時点ではスコアに全く影響を与えることができなかった。</p>
+
+<h3>昼過ぎ〜夕方</h3>
+
+<p>正直、記憶がだいぶ曖昧で何をしていたか覚えていない。</p>
+
+<p>Job を見る限りでは14時台に何度かベンチマークを実行し、 <code>/initialize</code> で fail したりしていたようだ。<br/>
+おそらく app と db でインスタンスを分けて、別インスタンス上の DB に接続しにいくあたりで環境変数に <code>127.0.0.1</code> が入ってしまってうまくいかないとか、そういうことをやっていた気がする。<br/>
+あとログ出したいよね、という話をしていた記憶があるのでそのあたりを頑張っていたような……。</p>
+
+<p>15時台になると success するようになり、ベンチマークの結果が若干上にブレたり下にブレたりしていた様子（しかし例によって記憶がない）。</p>
+
+<h3>夕方〜終了</h3>
+
+<p>最終的に MySQL のスロークエリが <code>SELECT * FROM categories</code> ばかりになったので、「これ変更されないマスタデータだし、起動時に全部取得してキャッシュしようぜ」って考えてシュッと実装した。</p>
+
+<p><code>WHERE parent_id = ?</code> のところはインデックスを張っていたのでスルーしたのと、 <code>/settings</code> でカテゴリのリストを取得している箇所も（そのまま出力しているのが気になったので）そのままにしておいた。</p>
+
+<p>このキャッシングは若干の効果があったようでチームとしてはここで初めて初期スコアを脱出した感じになった。</p>
+
+<p>その後、 <code>/users/transactions.json</code> のクエリ発行周りをいじって動かしてみたり <code>SELECT *</code> なクエリのカラムを指定する形に変更してみたりしたが、時間があまり残っていなかったこともあり、スコアが変わらなかったりベンチマークが fail してしまう変更は結局取り込まなかった。</p>
+
+<p>終盤になると、3台構成のインスタンスを app 2台、 db 1台にして app をバランシングしようとしていたが、画像アップロードの問題があり苦戦したあげく、バランシングした方がスコアが落ちてしまったので、これもやめた（結局最後まで app 1台、 db 1台で進めた）。</p>
+
+<p>また、序盤から存在が気になっていた <code>campaign</code> という項目の値を変化させてベンチマークを一通り動かしてみた。この項目には 0〜4 の整数が入り得ることがわかっており、5パターンのベンチマークを試して、最もスコアが出る値を入れることにした。<br/>
+（このタイミングの変更としては、これが一番スコアに貢献した）</p>
+
+<p>最後に仕込んでいたログを消したり、再起動してもベンチマーク通ることを確認したりして終了時間を迎えた。</p>
+
+<h2>雑感</h2>
+
+<h3>問題</h3>
+
+<p>とても良い、そして難しい問題だったように思う。<br/>
+スコアを上げるためには、ちゃんとシステムがやりたいこととやっていることを理解することが必要だったのではないだろうか。<br/>
+セオリー通りにこれをやっておけばとりあえずスコアが上がる、という簡単さはあまり感じられなかった。</p>
+
+<h3>進め方</h3>
+
+<p>色々と反省はある。</p>
+
+<ul>
+<li>練習不足が如実に出て、序盤の立ち上がりが遅かった</li>
+<li>デプロイ用にシェル書いてもらったりしたけど、ほとんど使わなかった</li>
+<li>バージョン管理していたけど、インスタンス上でコードいじったりもした
+
+<ul>
+<li>バージョン管理の目的はローカルでのコード編集だけではないので、バージョン管理をしたのは良かった</li>
+</ul>
+</li>
+<li><code>campaign</code> の値変更はもっと早めに一度試しておくべきだった
+
+<ul>
+<li>値によって何が変わるのかの把握が遅かった</li>
+</ul>
+</li>
+<li>実装の読み込みが浅かった</li>
+<li>ホワイトボード、 Apple TV を活かせなかった</li>
+</ul>
+
+
+<p>一方で良かったな、と思うこともある。</p>
+
+<ul>
+<li>初参加（初組み合わせ）にしてはよく動けたと思う</li>
+<li>役割分担が自然にできた</li>
+<li>インスタンス利用やベンチマーク実施を相談しながら進められた</li>
+<li>その時々で、誰が何をやるかの認識合わせができた</li>
+<li>終盤、戻しの判断が安全で安心感があった
+
+<ul>
+<li>駆け込みベンチマークでヒヤヒヤしたり、終盤で0点に怯えたりせずに済んだ</li>
+<li>業務ではないのでもう少しチャレンジしても良かったとは思う</li>
+</ul>
+</li>
+</ul>
+
+
+<p>まとめると <strong>実力不足を感じつつも、まだまだやれそうな気配もあり、悔しい思いをした</strong> といったところ。</p>
+
+<p>心が折れて次回参加する流れにならないことが最も懸念していた展開だったので、チームの誰も心が折れず、リベンジの意欲を高く持って終わりを迎えられたので、それは本当に良かった。</p>
+<div class="footnotes">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>正直これが一番の大仕事だったと思っている。<a href="#fnref:1" rev="footnote">&#8617;</a></p></li>
+<li id="fn:2">
+<p>このチームの1人が同僚であり、ちゃんと会社の許可を得て利用している。<a href="#fnref:2" rev="footnote">&#8617;</a></p></li>
+</ol>
+</div>
+
+                        </div>
+                    </div>
                 
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2019-09-06-new-original-blog-system.html">ブログシステムを一新した</a></h1>
-                    <div class="subtitle published">2019-09-06</div>
-                    <div class="content">
-                        <p>先日、社内 LT でブログ更新してないネタを使ったので、晴れて更新できるようになった。</p>
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2019-09-06-new-original-blog-system.html">ブログシステムを一新した</a></h1>
+                        <div class="subtitle published">2019-09-06</div>
+                        <div class="content">
+                            <p>先日、社内 LT でブログ更新してないネタを使ったので、晴れて更新できるようになった。</p>
 
 <p>ということで、ブログのシステムを新しくした。<br/>
 見た目はもちろんだけどシステム自体も新規に作り直した。</p>
@@ -82,14 +227,17 @@
 
 <p>このあたりは時間があればもう少し深堀りしてみたい。<br/>
 といいつつ、次に触る時間を得たときにはバージョンが上がって解消している可能性もある（それは当然大歓迎です）。</p>
+
+<p>[追記 2019-09-09]<br/>
+ちなみに Perl 6 製の静的サイトジェネレータを使ってみたいなら、オススメは <a href="https://modules.perl6.org/dist/Uzu:cpan:SACOMO">Uzu</a> だ。</p>
+                        </div>
                     </div>
-                </div>
                 
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2019-05-13-use-emacs-on-alacritty.html">alacritty で Emacs を使う</a></h1>
-                    <div class="subtitle published">2019-05-13</div>
-                    <div class="content">
-                        <p>alacritty というターミナルエミュレータが速いという話を聞き、仕事が一段落したタイミングで導入してみた。</p>
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2019-05-13-use-emacs-on-alacritty.html">alacritty で Emacs を使う</a></h1>
+                        <div class="subtitle published">2019-05-13</div>
+                        <div class="content">
+                            <p>alacritty というターミナルエミュレータが速いという話を聞き、仕事が一段落したタイミングで導入してみた。</p>
 
 <p><a href="https://github.com/jwilm/alacritty">alacritty</a></p>
 
@@ -221,14 +369,14 @@ tmux でタブや分割に相当する機能が確立されているため、タ
 </code></pre>
 
 <p>ちなみにこの問題は日本語の表示とは逆に High Sierra では起きたが El Capitan では起きなかった（ただしこれについてはそれぞれの環境での設定の違いが原因であって OS のバージョンの問題ではなさそうな気がしている）。</p>
+                        </div>
                     </div>
-                </div>
                 
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2018-09-11-builderscon-tokyo-2018.html">buiderscon tokyo 2018 （の記録）</a></h1>
-                    <div class="subtitle published">2018-09-11</div>
-                    <div class="content">
-                        <h2>参加した理由</h2>
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2018-09-11-builderscon-tokyo-2018.html">buiderscon tokyo 2018 （の記録）</a></h1>
+                        <div class="subtitle published">2018-09-11</div>
+                        <div class="content">
+                            <h2>参加した理由</h2>
 
 <p>友人からのお誘い。<br/>
 「会場、家から近いでしょう？」<br/>
@@ -276,14 +424,14 @@ tmux でタブや分割に相当する機能が確立されているため、タ
 一番緊張せずに参加できるカンファレンスだと思う。</p>
 
 <p>最近、事情があってあまりカンファレンスに行かないようにしていたけれど、行ってみるとやはり楽しいので今度はもっと早い段階から参加を決めて準備できるようにしたい。</p>
+                        </div>
                     </div>
-                </div>
                 
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2018-06-24-clean-hhkb.html">HHKB を漂白した</a></h1>
-                    <div class="subtitle published">2018-06-24</div>
-                    <div class="content">
-                        <p>3ヶ月ほど前のこと。</p>
+                    <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2018-06-24-clean-hhkb.html">HHKB を漂白した</a></h1>
+                        <div class="subtitle published">2018-06-24</div>
+                        <div class="content">
+                            <p>3ヶ月ほど前のこと。</p>
 
 <p>諸事情で、押入れにしまっていた HHKB Type-S 白を約2年ぶりに出すことになった。<br/>
 出してみると、（暗所に保存していたのに）かなり日焼けしており、そのまま使うには抵抗のある状況だった。<br/>
@@ -300,207 +448,12 @@ tmux でタブや分割に相当する機能が確立されているため、タ
 <p>無刻印だったので、バラしてキートップを洗浄したあと、戻すのに若干手間取った。<br/>
 外側のキーは横幅が違ったり同じだったりするので微妙にややこしいし、内側のキーは列ごとに角度（傾斜）が異なるので、どの列かは容易に判断できるが、そこから先の判断材料がない。<br/>
 バラす前と全く同じではないけれど、同じ形のものがちゃんと入るように試行錯誤して、動作を確認したところ、問題なく動いたので、これでいいか、という感じになった。</p>
+                        </div>
                     </div>
-                </div>
                 
-                <div class="article">
-                    <h1 class="title is-2"><a href="/entry/2018-04-16-make-qiita-team-viewer.html">Qiita Team Viewer というアプリを作った</a></h1>
-                    <div class="subtitle published">2018-04-16</div>
-                    <div class="content">
-                        <p>インターネットで生きていると、様々なサービスのアカウントが増えて管理が大変になったりすると思います。あるいはアカウント自体は1つだけど紐づくグループが増えるパターンもあります。</p>
-
-<p>たとえば Google アカウント（G Suite アカウント）とか GitHub の organization とか Slack の team とか Qiita:Team とか、仕事してたり OSS 活動してたりするとうっかり増えちゃいますよね。</p>
-
-<p>本題とは一切関係ないけど、僕はこの現象をアカウント・マルティプライズ(account multiplies)と呼んでいます。</p>
-
-<h2>複数の所属している Qiita:Team の記事を一覧で見たい</h2>
-
-<p>今回は Qiita:Team の話です。紆余曲折あって所属するチームが複数に増えてしまった僕は、わざわざチームごとにブラウザのタブを開いて個別に閲覧することにつらさを感じました。</p>
-
-<p>この手の同一サービス複数アカウントについては、サービスの主旨によって対応が変わるところですが、個人的には Qiita:Team の記事自体は複数のチームのものが混ざって一覧表示されても困らないなと思ったので、そういう使い方ができるアプリを作ることにしました。</p>
-
-<h2>Qiita Team Viewer</h2>
-
-<p>作ったものはここから落とせます。</p>
-
-<p><a href="https://github.com/risou/qiita-team-viewer/releases">Releases · risou/qiita-team-viewer</a></p>
-
-<p>使い方は簡単で、起動して（Gatekeeper 周りで警告でるかもしれません） Qiita のアカウントでログインしてアプリの連携を許可してもらえば、アカウントに紐づく Qiita:Team の記事の一覧が画面左側に出てきます。記事を選ぶと画面右側に記事の内容およびコメントが表示されます（その他は README をご覧ください）。</p>
-
-<p>Qiita Team Viewer v0.1.0 では以下のことができます。</p>
-
-<ul>
-<li>アカウントに紐づく Qiita:Team の記事が読める
-
-<ul>
-<li>ただしシングルサインオンでしかログインできない Qiita:Team の記事は読めません（API の制約によるものです）</li>
-</ul>
-</li>
-<li>閲覧している記事に絵文字リアクションを追加／削除する</li>
-<li>閲覧している記事へのコメントに絵文字リアクションを追加／削除する</li>
-<li>閲覧している記事のページをブラウザで開く</li>
-</ul>
-
-
-<p>Qiita Team Viewer v0.1.0 ではできないけど、今後のバージョンで以下のことができるようになる予定です（実装の難易度やアプリの方向性によって変更される可能性があります）。</p>
-
-<ul>
-<li>Qiita:Team を横断した記事検索</li>
-<li>記事の既読管理</li>
-<li>記事へのコメント追加</li>
-</ul>
-
-
-<p>一方で以下のことは今後もできるようにならない予定です。</p>
-
-<ul>
-<li>Qiita:Team への記事投稿</li>
-</ul>
-
-
-<p>これは主に、複数ある Qiita:Team で投稿先のチームを間違える危険を避けるためです。</p>
-
-<h2>Qiita Team Viewer の技術選定</h2>
-
-<p>ここからは素人がアプリを開発する上で考えたことを記録として残しておこうと思います。</p>
-
-<p>今回アプリを作るにあたって最初に考えたのは、 <strong>兼ねてより興味のあった Electron を使ってみよう</strong> ということです。<br/>
-ネイティブアプリがよかったのと、後々 Windows, Linux にも対応したかったということでちょうど良さそうに思いました。 NW.js などの類似の選択肢もありましたが、初めて触るジャンルということもあり現状で一番情報が多そうな Electron にしました。</p>
-
-<p>最初は Electron の簡単なアプリをチュートリアルなどを参考に作り、そのアプリ上で Qiita の API を実行して結果を得るだけのプログラムを書きました。そこから、実際にアプリを作っていく上で必要なことを考えました。</p>
-
-<ul>
-<li>Qiita の API をどう叩くか
-
-<ul>
-<li>こういうのは大抵 API を扱うライブラリがある</li>
-<li>公式が提供している <a href="https://github.com/increments/qiita-js">qiita-js</a> を使うことにした
-
-<ul>
-<li>後に判明したことだが、 qiita-js は Qiita API v2 に追随できておらず、一部の API を叩けなかった</li>
-<li>qiita-js が対応していない部分だけ温かみのあるリクエストになってしまった 😢</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>どの JS フレームワークを使うか
-
-<ul>
-<li>フレームワークを使わないのはただの苦行っぽい</li>
-<li>使ったことのない React か Vue.js にしようと思って双方を軽く調べて「この時期に始めるなら Vue.js かな」って感じで選んだ（勘です）</li>
-</ul>
-</li>
-<li>状態管理
-
-<ul>
-<li>Vue.js 使うなら Vuex を使えばいいのかなと安易に選択（他の選択肢がいまいちわからなかった）</li>
-</ul>
-</li>
-<li>CSS フレームワーク
-
-<ul>
-<li>使うかどうか、ってところからちょっと悩んだけど、自力で CSS 実装するのは素人には現実的ではないと判断</li>
-<li><strong>Bootstrap っていうものがあるらしい</strong> 程度の認識で軽く調べて Vue.js と相性良さそうで難しくなさそうな BULMA ってやつを選んだ</li>
-</ul>
-</li>
-</ul>
-
-
-<p>あとは「node module に electron-vue ってのがあるのかー」みたいな雑な感じで使ってみたり。</p>
-
-<p>専門職の人たちからすれば最適には程遠い選択だと思いますが、素人の手遊びとしては思ったより順調に試行錯誤しつつ実装が進み、なんとか現状まで持ってこれました。</p>
-
-<h2>新しく触れた技術要素</h2>
-
-<p>Electron を使うことを決めた時点で避けられない道だったのですが、ひとつひとつのことを実現するのに新しい技術要素に触れていくことになって新鮮な経験でした。実際に触れた新しいものは以下のとおり。</p>
-
-<ul>
-<li>Electron</li>
-<li>Vue.js</li>
-<li>Vuex</li>
-<li>BULMA</li>
-</ul>
-
-
-<p>どれもこれも全然知らないところからはじめて v0.1.0 をリリースするまで約1ヶ月。バッドプラクティスと言われるような使い方をしている箇所もあるかもしれないけど、なんとか使えるレベルまで持ってこれました。わからないこと多すぎてかなり勉強になった気がする（それをいちいち書き留めておく余裕は残念ながらなかったけれど）。</p>
-
-<h2>その他感想とか</h2>
-
-<p>できればテストも書きたかったけれど、特に仕事を休んだりもせず空いた時間で進めるには、試行錯誤しながら動くものを作るので精一杯でした。まあ、テスト自体は後からでも追加できるのでモチベーションが続けば。</p>
-
-<p>今後はドッグフーディングしつつ、検索機能とか追加していければなあと思ってます。けど、他にもやるべきことがあるので、ここから先はゆっくり進めていこうかと。</p>
-
-<p>あと、今回の開発で（僕みたいな人間にとっての） CSS フレームワークの強力さを思い知ったので、ブログのデザインとかアップデートしていきたいですね。</p>
-
-<h2>Qiita Team Viewer を作るにあたって参考にしたサイト</h2>
-
-<ul>
-<li>Qiita
-
-<ul>
-<li><a href="https://qiita.com/api/v2/docs">Qiita API v2ドキュメント - Qiita:Developer</a></li>
-<li><a href="https://github.com/increments/qiita-js">increments/qiita-js: Qiita API v2 client for browser and node</a></li>
-</ul>
-</li>
-<li>node.js
-
-<ul>
-<li><a href="https://q-az.net/node-js-file-read-write-append-unlink/">node.jsでファイルの読み込み、新規作成、上書き、追記、削除 | q-Az</a></li>
-<li><a href="http://mk.hatenablog.com/entry/2013/09/18/003944">Node.jsの例外処理（承前：なぜ例外処理が必要なのか） - まさたか日記</a></li>
-</ul>
-</li>
-<li>Electron
-
-<ul>
-<li><a href="https://electronjs.org/docs/development/build-instructions-osx">ビルド手順 (macOS) | Electron</a></li>
-<li><a href="https://electronjs.org/docs/development/releasing">リリース | Electron</a></li>
-<li><a href="https://imfly.gitbooks.io/electron-docs-gitbook/jp/">Introduction · Electron docs gitbook</a></li>
-<li><a href="https://qiita.com/oniatsu/items/98851e0463dfe83f04b0">Electron + Travis で楽々ビルド・リリースする最強のデスクトップアプリ開発 - Qiita</a></li>
-<li><a href="https://syon.github.io/refills/rid/1499505/">HTTP×Electronアプリのひな形の作り方から配布まで | Refills</a></li>
-<li><a href="https://qiita.com/nyanchu/items/15d514d9b9f87e5c0a29">30分で出来る、JavaScript (Electron) でデスクトップアプリを作って配布するまで - Qiita</a></li>
-<li><a href="https://nulab-inc.com/ja/blog/typetalk/3-points-for-releasing-production-electron-app/">Electronアプリをプロダクトとして「正しく」リリースするために必要な3つのこと | ヌーラボ</a></li>
-<li><a href="https://kana-linux.info/electron/electron%E3%81%A7%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%BC%E3%82%92%E9%9D%9E%E8%A1%A8%E7%A4%BA%E3%81%AB%E3%81%99%E3%82%8B">Electronでスクロールバーを非表示にする | カナのLinux</a></li>
-<li><a href="https://github.com/SimulatedGREG/electron-vue">SimulatedGREG/electron-vue: An Electron &amp; Vue.js quick start boilerplate with vue-cli scaffolding, common Vue plugins, electron-packager/electron-builder, unit/e2e testing, vue-devtools, and webpack.</a></li>
-<li><a href="https://simulatedgreg.gitbooks.io/electron-vue/content/ja/">導入 · electron-vue</a></li>
-<li><a href="https://github.com/YuheiNakasaka/vue-twitter-client">YuheiNakasaka/vue-twitter-client: Twitter client created with Vue.js + Electron</a></li>
-<li><a href="https://qiita.com/1ntegrale9/items/6e233f03b8cbff0b3c76">2017年度版 electron-vueで始めるVue.js - Qiita</a></li>
-<li><a href="https://qiita.com/nagisio/items/259bef1748a4db8e0af6">Re:ゼロから始めるElectron開発生活 - Qiita</a></li>
-<li><a href="https://qiita.com/kurimeg/items/1736ab05dde5d8f8973c">フロントエンド開発初心者がelectron-vueでアプリをつくってみた　その２～実装編～ - Qiita</a></li>
-<li><a href="https://github.com/manosim/gitify">manosim/gitify: GitHub Notifications on your desktop.</a></li>
-</ul>
-</li>
-<li>Vue.js
-
-<ul>
-<li><a href="https://jp.vuejs.org/v2/guide/index.html">はじめに — Vue.js</a></li>
-<li><a href="https://scrapbox.io/vue-yawaraka">やわらかVue.js - Scrapbox</a></li>
-</ul>
-</li>
-<li>Vuex
-
-<ul>
-<li><a href="https://vuex.vuejs.org/ja/">Introduction · Vuex</a></li>
-<li><a href="http://chibinowa.net/note/vuejs/vue-14.html">Vue.js と Vuex を使った簡単なメンバー管理フォームを作る | Cubix</a></li>
-<li><a href="https://webmanab-html.com/tip/vue-vuex/">Vue.js の状態管理ライブラリ Vuex のはじめかた -『Vue.js』 – webmanab.html／ウェブまなぶ</a></li>
-<li><a href="https://kana-linux.info/vue-js/vuex%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AEstate%E3%81%AE%E5%88%9D%E6%9C%9F%E5%8C%96%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">vuexでデータのstateの初期化するには | カナのLinux</a></li>
-<li><a href="https://qiita.com/suin/items/7331905a45a8ff80d4dd">Vuex：mapStateの書き方8パターン+11サンプルコード - Qiita</a></li>
-<li><a href="https://qiita.com/_P0cChi_/items/ebf8fbf035b36218a37e">vue.js＋Vuexチュートリアル - Qiita</a></li>
-<li><a href="https://qiita.com/hirohero/items/771ac34b8213105e2d5f">Vueコンポーネント &amp; Vuex テンプレ - Qiita</a></li>
-</ul>
-</li>
-<li>BULMA
-
-<ul>
-<li><a href="https://bulma.io/documentation/overview/start/">Get started with Bulma | Bulma: a modern CSS framework based on Flexbox</a></li>
-</ul>
-</li>
-</ul>
-
-                    </div>
-                </div>
-                
-            </section>
-        </div>
+                </article>
+            </div>
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 Copyright &copy; 2019- risou All Rights Reserved.

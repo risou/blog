@@ -16,20 +16,21 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <nav class="level">
-                <div class="level-left"></div>
-                <div class="level-right">
-                    <p class="level-item"><a href="/">top</a></p>
-                    <p class="level-item"><a href="/list.html">list</a></p>
-                </div>
-            </nav>
-            <section class="articles">
-                <div class="article">
-                    <h1 class="title is-2">PuTTY形式の秘密鍵をOpenSSH形式に変換する</h1>
-                    <div class="subtitle published">2014-01-09</div>
-                    <div class="content">
-                        <p>Windowsで使えるPuTTYというターミナルエミュレータがある。PuTTYはputtygenという鍵ジェネレータを持っていて、これを用いて普通に鍵を生成するとPuTTY形式の鍵ができあがる。拡張子がppkになっている秘密鍵などがそれだ。</p>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">PuTTY形式の秘密鍵をOpenSSH形式に変換する</h1>
+                        <div class="subtitle published">2014-01-09</div>
+                        <div class="content">
+                            <p>Windowsで使えるPuTTYというターミナルエミュレータがある。PuTTYはputtygenという鍵ジェネレータを持っていて、これを用いて普通に鍵を生成するとPuTTY形式の鍵ができあがる。拡張子がppkになっている秘密鍵などがそれだ。</p>
 
 <p>Macからこの鍵を用いてSSH接続するためには、OpenSSH形式に変換する必要がある。Windows環境があればPuTTYをダウンロードしてくればputtygenで秘密鍵をOpenSSH形式に変換することができる。</p>
 
@@ -51,11 +52,12 @@ $ puttygen id_rsa.ppk -O private-openssh -o id_rsa
 <p><a href="https://github.com/eldridgegreg/puttygen-osx">eldridgegreg/puttygen-osx</a></p>
 
 <p>これをダウンロードしてきて、そのまま Xcode で開いて引数を指定して実行(幸いにも .xcodeproj も含まれている)。問題なく <code>id_rsa</code> が生成された。</p>
+                        </div>
+                        <div class="subtitle published">2014-01-09 22:11:13.99865 JST</div>
                     </div>
-                    <div class="subtitle published">2014-01-09 22:11:13.99865 JST</div>
-                </div>
-            </section>
-        </div>
+                </article>
+            </div>
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 Copyright &copy; 2019- risou All Rights Reserved.

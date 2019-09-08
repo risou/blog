@@ -16,20 +16,21 @@
                 </div>
             </div>
         </section>
-        <div class="container">
-            <nav class="level">
-                <div class="level-left"></div>
-                <div class="level-right">
-                    <p class="level-item"><a href="/">top</a></p>
-                    <p class="level-item"><a href="/list.html">list</a></p>
-                </div>
-            </nav>
-            <section class="articles">
-                <div class="article">
-                    <h1 class="title is-2">Yesod で HashDB を用いた認証の実装</h1>
-                    <div class="subtitle published">2013-09-11</div>
-                    <div class="content">
-                        <p>基本的には以下のページを見ながら実装すれば良いと思う。</p>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">Yesod で HashDB を用いた認証の実装</h1>
+                        <div class="subtitle published">2013-09-11</div>
+                        <div class="content">
+                            <p>基本的には以下のページを見ながら実装すれば良いと思う。</p>
 
 <p><a href="http://hackage.haskell.org/packages/archive/yesod-auth/1.2.1/doc/html/Yesod-Auth-HashDB.html">http://hackage.haskell.org/packages/archive/yesod-auth/1.2.1/doc/html/Yesod-Auth-HashDB.html</a></p>
 
@@ -58,11 +59,12 @@ sqlite&gt; insert into user values (1, "username", "salt+password''s hash", "sal
 <pre><code>getSecretR = do
     req &lt;- requireAuthId
 </code></pre>
+                        </div>
+                        <div class="subtitle published">2013-09-11 01:38:45.103145 JST</div>
                     </div>
-                    <div class="subtitle published">2013-09-11 01:38:45.103145 JST</div>
-                </div>
-            </section>
-        </div>
+                </article>
+            </div>
+        </section>
         <footer class="footer">
             <div class="content has-text-centered">
                 Copyright &copy; 2019- risou All Rights Reserved.
