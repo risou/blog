@@ -1,5 +1,10 @@
 blog:
   title: risou's Lithograph
   footer: 'Copyright &copy; 2019- risou All Rights Reserved.'
+  domain: blog.risouf.net
+ogp:
+  default_image: /static/img/sunglass.jpeg
+  fb_app_id: 2945406965474658
+  twitter_id: risou
 option:
   ga_id: UA-29519043-1
