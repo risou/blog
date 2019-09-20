@@ -4,7 +4,7 @@ blog:
   domain: blog.risouf.net
   description: "risou's mini blog - writing about software engineering, thinking, private events"
 ogp:
-  default_image: /static/img/sunglass.jpeg
+  default_image: https://blog.risouf.net/static/img/sunglass.jpeg
   fb_app_id: 2945406965474658
   twitter_id: risou
 option:
