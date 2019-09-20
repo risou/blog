@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Lithograph を育てる | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2019-09-20-nurture-lithograph.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="毎日ブログを書くような性格でもないのだが、前回の記事から今日までの間、隙を見つけては Lithograph を育てていた。 育てるといってもた..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>Lithograph を育てる | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">Lithograph を育てる</h1>
+                        <div class="subtitle published">2019-09-20</div>
+                        <div class="content">
+                            <p>毎日ブログを書くような性格でもないのだが、前回の記事から今日までの間、隙を見つけては Lithograph を育てていた。<br/>
+育てるといってもたいしたことはしていない。<br/>
+（実はバージョンを上げてすらいない）</p>
+
+<p>改善内容は以下。</p>
+
+<ul>
+<li>Travis CI での build の実行結果を Slack に通知するサンプルを追加</li>
+<li>Google Analytics のタグを埋め込めるようにした</li>
+<li>OGP 用のタグを設定できるようにした</li>
+<li>build 用のシェルに <code>-eu</code> を設定</li>
+</ul>
+
+
+<p>だいたいこれくらい。<br/>
+自分で使っているうちに、「あれもできたらな」と思ったものに対応していっている感じだ。</p>
+
+<p>他にも改善したいことはあるが、これはたぶんすぐにはやらないだろうな、というものもある。<br/>
+例えば、</p>
+
+<ul>
+<li>初期セットアップ時に生成するリソースファイルのみ更新するコマンドの追加
+
+<ul>
+<li>Lithograph 本体側で設定ファイル等に更新があった場合に反映したい</li>
+</ul>
+</li>
+<li><code>config.yml</code> に必要な項目が揃っているかをチェックする機能
+
+<ul>
+<li>あると良いかもだけど、今は必須項目もほぼないのでなくてもいいかな</li>
+</ul>
+</li>
+<li>既にファイルのあるディレクトリでの初期セットアップを抑制する機能</li>
+</ul>
+
+
+<p>あたり。これらはあると便利そうな気がするけど、あんまり頻繁に使われるものではないので実装を急いでいない。</p>
+
+<p>時間さえ見つけられれば（他に優先度の高いものがなければ）やりたいのは主に build 周りの改良で、</p>
+
+<ul>
+<li>「次の記事」「前の記事」へのリンクを付けられるようにする</li>
+<li>記事にタグを付けられるようにして、タグでフィルタしたリストページを作る</li>
+<li>更新のない記事の build をスキップする</li>
+</ul>
+
+
+<p>などは後々のことを考えるとやっておきたい。</p>
+
+<p>けれど、他にもやるべきことがあったりするので、これらはまたそのうち時間を見つけて、といった感じ。</p>
+                        </div>
+                        <div class="subtitle published">2019-09-20T23:59:00.119837+09:00</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
