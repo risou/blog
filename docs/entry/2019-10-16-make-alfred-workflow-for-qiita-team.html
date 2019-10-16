@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Qiita:Team の記事を検索するための Alfred Workflow を実装した | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2019-10-16-make-alfred-workflow-for-qiita-team.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="結構前から Alfred というアプリを使っていて、 Spotlight と使い分けたり、それぞれがバージョンを上げるごとに行ったり来たりを繰..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>Qiita:Team の記事を検索するための Alfred Workflow を実装した | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">Qiita:Team の記事を検索するための Alfred Workflow を実装した</h1>
+                        <div class="subtitle published">2019-10-16</div>
+                        <div class="content">
+                            <p>結構前から <a href="https://www.alfredapp.com">Alfred</a> というアプリを使っていて、 Spotlight と使い分けたり、それぞれがバージョンを上げるごとに行ったり来たりを繰り返していたのだけれど、最近は Alfred Workflow がやっぱり強いな、ということで Alfred をメインに使っている（ファイルサーチだけなら現時点では Spotlight の方が強い気がしているので、サブで Spotlight も使っている）。</p>
+
+<p><a href="https://www.alfredapp.com/workflows/">Alfred Workflow</a> とはなんぞや、というと Alfred が備えているアクションを組み合わせて複雑なオペレーションを Alfred の UI で操作できるようにするもので、特に強力なのがアクションとして <strong>コードを実行したりプログラムを呼んだり</strong> できること。</p>
+
+<p>たとえば自分が便利に使っているところとしては、以下のようなものがある。</p>
+
+<ul>
+<li><a href="https://github.com/gharlan/alfred-github-workflow#github-workflow-for-alfred-3">GitHub Workflow for Alfred 3</a></li>
+<li><a href="http://www.packal.org/workflow/lazy-link">Lazy Link</a></li>
+<li><a href="https://github.com/uetchy/alfred-qiita-workflow">Alfred Qiita Workflow</a></li>
+<li><a href="http://www.packal.org/workflow/dropbox-paper-finder">dropbox paper finder</a></li>
+<li><a href="http://www.packal.org/workflow/div">Div</a></li>
+<li><a href="https://github.com/kyokomi/alfred-esa-workflow">alfred-esa-workflow</a></li>
+</ul>
+
+
+<p>上記を見てもらうとわかるけど、いわゆる「記事」に相当するものを検索するのに多用しており、 Qiita や Esa といった情報共有サービスや Dropbox Paper のような閉じたコミュニティ内で使うようなドキュメント共有サービスにある記事を探すのに重宝している。</p>
+
+<p>ただ、上記で紹介している Qiita の Workflow は qiita.com には対応しているけれど、 Qiita:Team には対応しておらず、 Qiita:Team 内の記事を検索したいケースでだけいちいちブラウザにスイッチするのが面倒だった。<br/>
+ので、自分で作った。</p>
+
+<p><a href="http://www.packal.org/workflow/qiitateam">Alfred Workflow for Qiita:Team</a></p>
+
+<p>Qiita:Team の API は何度か触ったことがあるので、サクッとできた。<br/>
+Alfred Workflow では直接実行できる言語には限りがあるが、 bash とかを実行できるので実行可能なバイナリが生成できる言語であればだいたい使える。<br/>
+ということで今回は <a href="https://www.rust-lang.org/">Rust</a> に挑戦してみた。</p>
+
+<p><a href="https://github.com/risou/qiita-team-alfred-workflow">risou/qiita-team-alfred-workflow: search articles in Qiita:Team by Alfred Workflow</a></p>
+
+<p>1日の空き時間を少しずつ使って Rust を学びながら作って、だいたい1週間ほどで作ったので、実装自体も Rust 歴1週間の人が書いたものと思ってもらえると助かる。<br/>
+つまりこのコードの中にはアンチパターンとかバッドプラクティスとかあったりするかもしれない（あれば Issue を立てるなり Twitter 等で直接でも良いので指摘いただけると喜んで直します）。</p>
+
+<p>Rust 自体には以前から興味があったけれど、こういう機会がなければなかなかチャレンジしないので今回は我ながら良い機会を得られたと思う。<br/>
+とはいってもまだまだわかっていないことも多く、たとえばテストなども書けていないわけで、学ぶべきことはまだまだたくさんある。<br/>
+このあたりはこのツールをアップデートしていくだけでなく、他にも Rust で実装する機会を作っていく必要があるな、と思っているので少しずつチャレンジしていきたい。</p>
+                        </div>
+                        <div class="subtitle published">2019-10-16T20:04:18.130993+09:00</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
