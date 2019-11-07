@@ -7,5 +7,6 @@ ogp:
   default_image: https://blog.risouf.net/static/img/sunglass.jpeg
   fb_app_id: 2945406965474658
   twitter_id: risou
+  default_twitter_card: summary
 option:
   ga_id: UA-29519043-1
