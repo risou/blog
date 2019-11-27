@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="ひとつのドメインでプロトコルによって本番環境／テスト環境を切り替える手法はありか | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2019-11-27-right-or-wrong-of-recycling-domain.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="  ちょっと素人の僕にはわからないので玄人の皆さんにアンケートに答えていただきたいのですが https :// https://t.co/6E..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>ひとつのドメインでプロトコルによって本番環境／テスト環境を切り替える手法はありか | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">ひとつのドメインでプロトコルによって本番環境／テスト環境を切り替える手法はありか</h1>
+                        <div class="subtitle published">2019-11-27</div>
+                        <div class="content">
+                            
+
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ちょっと素人の僕にはわからないので玄人の皆さんにアンケートに答えていただきたいのですが https :// <a href="https://t.co/6EqviEPdFv">https://t.co/6EqviEPdFv</a> で本番運用しているウェブサイトのテスト環境に http :// <a href="https://t.co/6EqviEPdFv">https://t.co/6EqviEPdFv</a> でアクセスできるようにするのって一般的な手法なんですか？</p>&mdash; risou (@risou) <a href="https://twitter.com/risou/status/1199161224547581952?ref_src=twsrc%5Etfw">November 26, 2019</a></blockquote>
+
+
+<p> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>先日、上記のツイートでアンケートをとった。<br/>
+実は勤め先の社内でも「これってどうなんですかね」と大半が Web/App エンジニアで構成されている Slack 上のチャネルで質問をした。<br/>
+ちなみにそのチャネルでは回答率約50％で、全員が「なし」だった。</p>
+
+<p>そもそもなぜこのような問いかけをしたかというと、発端は以下のツイートである。</p>
+
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">現在Twitterにて「http」で始まるセンクロWebサイトの情報が拡散されていることを確認しております。本来の公式サイトは「https」で始まるURLとなっており、「http」で始まるURLはお客様向けの正式なサイトではなく、掲載されている情報はテスト環境の内容となります。<a href="https://twitter.com/hashtag/%E3%82%BB%E3%83%B3%E3%82%AF%E3%83%AD?src=hash&amp;ref_src=twsrc%5Etfw">#センクロ</a></p>&mdash; 覇穹 封神演義 〜センカイクロニクル〜【公式】 (@houshinengi_sc) <a href="https://twitter.com/houshinengi_sc/status/1198952733543288833?ref_src=twsrc%5Etfw">November 25, 2019</a></blockquote>
+
+
+<p> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>このツイートを見たとき、「どうしてそんな下手な嘘をつくんだろう」と思った。<br/>
+嘘だと思ったのは、ひとつのドメインを https と http でそれぞれ本番環境、テスト環境につながるようにしておく、というやり方は明らかに良くない手法だ、と考えたからだ。<br/>
+そして、このツイートの裏には「本当は隠しておきたい別の事柄があるのではないか」と考えたのだ。</p>
+
+<p>しかし、軽く調べてみると、どうやら本当にそのような設定をしていたタイミングがあったようで、 Google にはテスト環境と思われるページのキャッシュが残っている。<br/>
+（見た目でテスト環境と容易に判断できるものではなかったが、ページのタイトルが明らかに本番向けではない文字列だった）</p>
+
+<p>となると嘘と判断したのは僕の早計で、これはもしやハンロンの剃刀なのでは、という可能性が思い浮かんだ。<br/>
+そしてもうひとつ、そもそも「明らかに良くない手法」という僕の判断自体が間違っている可能性も思い浮かんだ。</p>
+
+<p>そこで最初のツイートをした、というわけだ。</p>
+
+<p>僕の周辺にいる人たちの大半はこの手法を良いとは思っていないようだ。</p>
+
+<p>僕自身、改めて自分がなぜ良くないと判断したのかを整理しておく。</p>
+
+<p>想定する状況は以下の通り。</p>
+
+<ol>
+<li>あるドメイン（ここでは <code>example.com</code> とする）を所有している</li>
+<li><code>https://example.com</code> にアクセスしたら、本番環境につながるように設定する</li>
+<li><code>http://example.com</code> にアクセスしたら、 SSL にリダイレクトする</li>
+<li>テスト環境で動作を確認したい時のみ、 <code>http://example.com</code> にアクセスしたら、テスト環境につながるように設定する</li>
+</ol>
+
+
+<p>僕がこのやり方は良くない、と考えるのは以下の点だ。</p>
+
+<ul>
+<li>アクセスするタイミングによって <code>http://example.com</code> にアクセスしたときの接続先が異なる
+
+<ul>
+<li>状況を知らない閲覧者に混乱を招く</li>
+</ul>
+</li>
+<li>テスト環境に public にアクセスできる
+
+<ul>
+<li>テスト環境には社内ネットワークからのみアクセスできるのが望ましい</li>
+</ul>
+</li>
+<li>テスト環境が検索エンジンにキャッシュされる
+
+<ul>
+<li><code>noindex</code> なり robots.txt なりでキャッシュされないようにしておく必要がある
+
+<ul>
+<li>テスト環境のみ設定が必要になるので <code>noindex</code> などでは本番とコードを同一にできないデメリットがある</li>
+<li>robots.txt で回避するのが良さそう</li>
+<li>（ちなみに、これを記載しているのは実際にテスト環境と思われるページのキャッシュが Google に残っているため）</li>
+</ul>
+</li>
+<li>そもそもこれも社内ネットワークからしかアクセスできないようにしておけば解決する</li>
+</ul>
+</li>
+</ul>
+
+
+<p>ではどうするのが良いか、というと以下のような方法が考えられる。</p>
+
+<ul>
+<li>テスト環境用に別ドメインを用意する</li>
+<li>テスト環境へのアクセスを制限する</li>
+</ul>
+
+
+<p>当然、これらの方法を取れないケースもある。<br/>
+たとえば別途ドメインを取得する予算がなかったり、社外の関係者にテスト環境を見てもらうために不特定の IP から接続できる必要があったり。</p>
+
+<p>リスクや回避方法を理解した上で仕方なくこのような手法をとっているのか、何も考えずにやっているのかで内部の状況は大きく異なるように思える。<br/>
+一方で外からはその違いはわからないし、少々の制約があろうがこれは回避した方が良いリスクだと僕は思う。</p>
+
+<p>とはいえ、僕の考えが正しいという確信を持っているわけでもない。<br/>
+（やや誇張した表現ではあるが）最初のツイートにあるように、僕はこのあたりの専門家ではない。<br/>
+個人的には専門家の意見を聞いてみたいが、専門家に問題ないと言われても、僕自身は選択の余地があればリスクを回避と思う。</p>
+                        </div>
+                        <div class="subtitle published">2019-11-27T23:36:43.594014+09:00</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
