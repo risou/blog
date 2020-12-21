@@ -18,7 +18,3 @@ jobs:
           zef install Template6
           zef install YAMLish --force-test
           zef list --installed
-
-
-
-	  
