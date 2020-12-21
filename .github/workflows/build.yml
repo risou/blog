@@ -14,10 +14,10 @@ jobs:
         uses: Raku/setup-raku@v1
       - name: Install
         run: |
-	  zef install Text::Markdown::Discount
-	  zef install Template6
-	  zef install YAMLish --force-test
-	  zef list --installed
+          zef install Text::Markdown::Discount
+          zef install Template6
+          zef install YAMLish --force-test
+          zef list --installed
 
 
 
