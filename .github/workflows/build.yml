@@ -22,5 +22,4 @@ jobs:
       - name: Build
         run: |
           export RAKULIB=Lithograph/lib
-          raku Lithograph/bin/lithograph create
-          raku Lithograph/bin/lithograph build
+          bash Lithograph/bin/build.sh
