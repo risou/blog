@@ -22,9 +22,9 @@ jobs:
           git clone --depth 1 https://github.com/risou/Lithograph.git
       - name: Build
         run: |
-          git switch -c ${{github.head_ref}} origin/${{github.head_ref}}
+          git switch -c $GITHUB_REF origin/$GITHUB_REF
           export RAKULIB=Lithograph/lib
           bash Lithograph/bin/build.sh
           git add docs/*
           git commit -m "[ci skip] by GitHub Actions (JOB $GITHUB_RUN_NUMBER)"
-          git push https://github.com/${{github.repository}}.git ${github.head_ref}} # >/dev/null
+          git push https://github.com/$GITHUB_REPOSITORY $GITHUB_REF # >/dev/null
