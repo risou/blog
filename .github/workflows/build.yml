@@ -22,7 +22,7 @@ jobs:
           git clone --depth 1 https://github.com/risou/Lithograph.git
       - name: Build
         run: |
-          git switch ${{github.head_ref}}
+          git switch -c ${{github.head_ref}} origin/${{github.head_ref}}
           export RAKULIB=Lithograph/lib
           bash Lithograph/bin/build.sh
           git add docs/*
