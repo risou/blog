@@ -6,7 +6,7 @@ perl6:
   - '2019.03'
 install:
   - sudo apt-get install libmarkdown2-dev
-  - rakudobrew build zef
+  - rakudobrew build-zef
   # - zef install https://${GH_TOKEN}@github.com/risou/Lithograph.git
   - zef install Text::Markdown::Discount
   - zef install Template6
