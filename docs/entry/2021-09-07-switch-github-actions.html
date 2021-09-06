@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="ブログの CI build を Travis CI から GitHub Actions に移行した | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2021-09-07-switch-github-actions.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="以前このブログに書いたけど、このブログは自作の静的サイトジェネレータ &ldquo;Lithograph&rdquo; を使っている。 Lit..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>ブログの CI build を Travis CI から GitHub Actions に移行した | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">ブログの CI build を Travis CI から GitHub Actions に移行した</h1>
+                        <div class="subtitle published">2021-09-07</div>
+                        <div class="content">
+                            <p>以前このブログに書いたけど、このブログは自作の静的サイトジェネレータ &ldquo;Lithograph&rdquo; を使っている。<br/>
+Lithograph は GitHub Pages に対応しており、 <code>.travis.yml</code> を設定することで Travis CI 上で markdown から HTML を生成していた。</p>
+
+<p>今回、この仕組みを Travis CI から GitHub Actions に移行した。<br/>
+といっても移行対応のほとんどは8ヶ月ほど前に進めており、今回は残作業を完了したということになる。</p>
+
+<p>Lithograph は Raku で書かれたアプリケーションであり、 Travis CI を採用していたのもこれに依るものが大きかった。当時、 Travis CI は Perl 6 （現在の Raku ）に対応していたのだ。<br/>
+しかし、そもそも GitHub Pages を想定したアプリケーションだったこともあり、記事をビルドする仕組みも GitHub Actions に対応する方がコンパクトにまとまると考えた。</p>
+
+<p>Travis CI から GitHub Actions への移行は難しくなく、 Raku のビルド環境を用意して Lithograph が提供するコマンドを実行するシェルファイルを実行すれば良かった。<br/>
+Slack への通知も公開されている Action があり、それを使うだけだったのであまり時間をかけずに済んだ。</p>
+
+<p>そして最後に、もうひとつのチャレンジとして今現在、この記事を &ldquo;github.dev&rdquo; で書いている。<br/>
+ここで書いて、 Github Actions でビルドされ、ブログが更新されれば、 Git の実行環境がないマシンからでもブラウザひとつで記事を書くことができる。<br/>
+ここまでできれば、静的サイトジェネレータとして僕が求めていた最低限の機能は揃ったと言えそうだ。<br/>
+必要な機能のほとんどを GitHub に依存していることだけは好ましくないが、 GitHub が失われたとしてもエディタと Git とシェルスクリプトの実行環境があれば Lithograph は利用可能なので、ひとまずはこれで良いと思っている。<br/>
+今後も時間を見つけて、少しずつ改善していければと思う。</p>
+                        </div>
+                        <div class="subtitle published">2021-09-07T02:24:15.149284+09:00</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
