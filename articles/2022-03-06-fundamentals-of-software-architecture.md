@@ -7,7 +7,7 @@ datetime: 2022-03-06T18:35:25.467102+09:00
 タイトルから興味を惹かれていたので、このような機会をいただけたこと、非常に感謝しております。  
 島田さん、 O'Reilly Japan さん、そして繋いでくださった矢部さん、ありがとうございます。
 
-![](/static/img/fundamentas-of-software-architecture.jpg)
+![](/static/img/fundamentals-of-software-architecture.jpg)
 
 [O'Reilly Japan - ソフトウェアアーキテクチャの基礎](https://www.oreilly.co.jp/books/9784873119823/)
 
