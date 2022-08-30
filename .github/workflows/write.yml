@@ -32,6 +32,7 @@ jobs:
           git config --local user.name "GitHub Actions"
           git switch ${GITHUB_REF##*/}
           export RAKULIB=Lithograph/lib
+          export PATH=$PATH:Lithograph/bin
           lithograph write ${{inputs.file}}
           git diff
           git add articles/*
