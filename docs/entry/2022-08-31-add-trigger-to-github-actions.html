@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Lithograph を GitHub で使いやすいようにトリガーを追加した | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2022-08-31-add-trigger-to-github-actions.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="このブログのシステムである Lithograph は元々ローカルでの利用を想定して、新しい記事を作成するコマンドなどを実装していた。  しかし..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>Lithograph を GitHub で使いやすいようにトリガーを追加した | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">Lithograph を GitHub で使いやすいようにトリガーを追加した</h1>
+                        <div class="subtitle published">2022-08-31</div>
+                        <div class="content">
+                            <p>このブログのシステムである Lithograph は元々ローカルでの利用を想定して、新しい記事を作成するコマンドなどを実装していた。</p>
+
+<p>しかし昨今では想定していた主なホスティング先である GitHub でできることが増えており、現在では <a href="/entry/2021-09-07-switch-github-actions.html">直接 Visual Studio Code を起動してブラウザ上で記事を書く</a> 使い方に自分自身が慣れてしまった。</p>
+
+<p>そこで GitHub Actions の手動実行機能を用いて、記事ファイル作成コマンドを実行するように変更した。<br/>
+使い方は簡単で、ブログのリポジトリで Actions のページに行って、対象の Workflow を選択してボタンを押すだけ。<br/>
+すると、ファイル名の入力が求められるのでそれだけ入力すれば新しい記事ファイルを作成してコミットを積んでくれる。<br/>
+その後は Visual Studio Code に移って当該ファイルを編集すれば良い。</p>
+
+<p>これで Lithograph 自体の機能を活用しつつブラウザ上でブログを書くことを完結できるようになった。</p>
+
+<p>しかし1点気になることがある。<br/>
+それは GitHub Actions でコマンド実行した際のタイムゾーンが UTC であることだ。<br/>
+Lithograph の記事作成コマンドは実行された日時をファイル内に出力するし、ファイル名にも日付が使われる。<br/>
+これが UTC であること自体は問題ないのだが、これによって記事の作成日時が表記上はずれてしまう可能性がある。<br/>
+簡単に言えば、日が変わってから朝9時までに記事作成コマンドを実行すると、前日の記事として生成されてしまう。<br/>
+（もちろん、この記事も手動で2022年8月31日の記事という形に修正したが、記事ファイルが生成された時点では2022年8月30日の記事ということになっていた）</p>
+
+<p>これについては、そもそも Lithograph がタイムゾーンを考慮していないことが問題なので、後日修正したい。</p>
+                        </div>
+                        <div class="subtitle published">2022-08-31T03:10:57.975102Z+09:00</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
