@@ -33,7 +33,9 @@ jobs:
           git switch ${GITHUB_REF##*/}
           export RAKULIB=Lithograph/lib
           lithograph write ${{inputs.file}}
+          git diff
           git add articles/*
+          git status
           git commit -m "[ci skip] by GitHub Actions (JOB $GITHUB_RUN_NUMBER)"
           git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git ${GITHUB_REF##*/} # >/dev/null
       - name: Slack Notification Write Command Success
