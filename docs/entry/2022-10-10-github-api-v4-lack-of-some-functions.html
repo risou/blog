@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="GitHub API v4 では v3 でできることのいくつかができない | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2022-10-10-github-api-v4-lack-of-some-functions.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="最近いろいろな事情があり、 API 経由で GitHub からデータを取得したり変更をかけたりしたくて GitHub API について調べたり..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>GitHub API v4 では v3 でできることのいくつかができない | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">GitHub API v4 では v3 でできることのいくつかができない</h1>
+                        <div class="subtitle published">2022-10-10</div>
+                        <div class="content">
+                            <p>最近いろいろな事情があり、 API 経由で GitHub からデータを取得したり変更をかけたりしたくて GitHub API について調べたり実際に叩いてみたりしていた。</p>
+
+<p>GitHub の API は現行では REST API である v3 と GraphQL API である v4 が提供されており、 v4 は v3 の後継というよりは新規に作り直しているもの、という立ち位置のようだ。</p>
+
+<p>基本的には最新版を使うのが良いだろうという認識のもと（幸いにも GraphQL に触れた経験はあったので） v4 を使ってやりたいことを実現するコードを書き進めていた。<br/>
+が、あることをやろうとして、それを実現する機能が v4 では提供されていなさそうだ、という事に気づいた。<br/>
+やろうとしていたのは、 GitHub Organization における Team で、要は作業の一環として複数のチームを一気に作りたかったのだ。<br/>
+だが GitHub API v4 のスキーマを見ていると、 <code>createTeam</code> という感じの mutation が存在しない。<br/>
+v3 のドキュメントを見に行ってみると <a href="https://docs.github.com/ja/rest/teams/teams#create-a-team">Teams - GitHub Docs</a> とあり POST で <code>/orgs/{org}/teams</code> にリクエストを送ることでチームを作れそうである。</p>
+
+<p>と、ここまで書いておきながら本当に API v4 でできないのか、まだよくわかっていない。<br/>
+GitHub 上で GitHub API を活用してそうなリポジトリをいくつか見て回ったが、そのうちのいくつかは v3 と v4 を併用しているようだったので、「v3 でできることは全て v4 でできる」というわけではなさそうに見える。</p>
+
+<p>ということで、自分としては v3 / v4 を併用するか、 v3 なら自分がやりたいことが全てできると信じて v3 のみに統一するか、という判断が必要そうだ。</p>
+                        </div>
+                        <div class="subtitle published">2022-10-10T13:15:25.483445Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>

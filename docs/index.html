@@ -42,6 +42,27 @@
                 <article class="articles">
                     
                     <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2022-10-10-github-api-v4-lack-of-some-functions.html">GitHub API v4 では v3 でできることのいくつかができない</a></h1>
+                        <div class="subtitle published">2022-10-10</div>
+                        <div class="content">
+                            <p>最近いろいろな事情があり、 API 経由で GitHub からデータを取得したり変更をかけたりしたくて GitHub API について調べたり実際に叩いてみたりしていた。</p>
+
+<p>GitHub の API は現行では REST API である v3 と GraphQL API である v4 が提供されており、 v4 は v3 の後継というよりは新規に作り直しているもの、という立ち位置のようだ。</p>
+
+<p>基本的には最新版を使うのが良いだろうという認識のもと（幸いにも GraphQL に触れた経験はあったので） v4 を使ってやりたいことを実現するコードを書き進めていた。<br/>
+が、あることをやろうとして、それを実現する機能が v4 では提供されていなさそうだ、という事に気づいた。<br/>
+やろうとしていたのは、 GitHub Organization における Team で、要は作業の一環として複数のチームを一気に作りたかったのだ。<br/>
+だが GitHub API v4 のスキーマを見ていると、 <code>createTeam</code> という感じの mutation が存在しない。<br/>
+v3 のドキュメントを見に行ってみると <a href="https://docs.github.com/ja/rest/teams/teams#create-a-team">Teams - GitHub Docs</a> とあり POST で <code>/orgs/{org}/teams</code> にリクエストを送ることでチームを作れそうである。</p>
+
+<p>と、ここまで書いておきながら本当に API v4 でできないのか、まだよくわかっていない。<br/>
+GitHub 上で GitHub API を活用してそうなリポジトリをいくつか見て回ったが、そのうちのいくつかは v3 と v4 を併用しているようだったので、「v3 でできることは全て v4 でできる」というわけではなさそうに見える。</p>
+
+<p>ということで、自分としては v3 / v4 を併用するか、 v3 なら自分がやりたいことが全てできると信じて v3 のみに統一するか、という判断が必要そうだ。</p>
+                        </div>
+                    </div>
+                
+                    <div class="article">
                         <h1 class="title is-2"><a href="/entry/2022-10-03-begin-learning-how-to-solve-rubiks-cube.html">ルービックキューブで遊び始めた</a></h1>
                         <div class="subtitle published">2022-10-03</div>
                         <div class="content">
@@ -151,36 +172,6 @@ Lithograph の記事作成コマンドは実行された日時をファイル内
 <p>僕自身はあまりマメな性格ではないので、こういうことを継続するのは苦手だけれど、こういうことに抵抗がないひとは試してみると良いかもしれない。<br/>
 日報を書く際についでにポイントを計算する、という感じでやっていたけど、日報を書いたら勝手に集計されるような仕組みがあれば今でも続けられたんじゃないかなあ、とは思う。<br/>
 それはそれとして、 GitHub の Insights でコミット数などを見れる方がモチベーションにはつながりやすいな、というのは間違いなくある。</p>
-                        </div>
-                    </div>
-                
-                    <div class="article">
-                        <h1 class="title is-2"><a href="/entry/2022-08-22-buy-insert-of-bookarc.html">Twelve South BookArc のインサートを買った</a></h1>
-                        <div class="subtitle published">2022-08-22</div>
-                        <div class="content">
-                            <p>自宅における仕事環境では Twelve South BookArc というスタンドを使っている。</p>
-
-<p><a href="https://www.twelvesouth.com/products/bookarc-for-macbook">BookArc | Vertical Desktop Stand</a></p>
-
-<p>仕事で使っている MacBook 用のスタンドとして利用している。<br/>
-これを使い始めたのは、当時使っていた MacBook (Pro 16-inch, 2019) がすぐに発熱し、 CPU を抑制するために kernel_task が張り付いて困っていたからだ。<br/>
-放熱を促進する効果があったかはわからないが、限られたスペースに MacBook を置く手段としては期待どおりに機能していた。</p>
-
-<p>先日、仕事用の MacBook を新しいものと交換することになった。<br/>
-MacBook は世代やサイズによって厚みや細かな部分の形状に違いがあり、 Twelve South BookArc はそれぞれに対応できるように複数のインサートを用意している。<br/>
-僕が購入したときについていたインサートは3種類あるが、どれも新しい MacBook には対応していなかった。<br/>
-調べると、対応したインサートが単品で販売されているとわかった。</p>
-
-<p>Twelve South BookArc のインサートを購入するにあたって、まずは公式サイトを見に行った。<br/>
-公式サイト経由でオンラインで購入も可能で、販売価格は $9.99。<br/>
-これをそのまま買おうかと考えたが日本に送ってもらうとなると送料が最低でも $27 以上かかることがわかった。<br/>
-商品の価格よりも送料の方が高い典型的なパターンだ。<br/>
-さすがにそれは、と思ったので国内で販売しているところを探した。<br/>
-料金は2倍弱の ¥1,980 と少し高かったが、送料無料だったためそちらで購入。<br/>
-購入した際に「約1週間後に届きます」という連絡がきたが、翌日には発送され、その次の日には家に届いた（1週間後着とはなんだったのか）。</p>
-
-<p>というわけで無事に新しい MacBook も所定の位置に収まった。<br/>
-今のところファンがうなるような使い方もしておらず放熱に貢献しているかは相変わらずわからないが、スペースの節約という意味では変わらず貢献してくれている。</p>
                         </div>
                     </div>
                 
