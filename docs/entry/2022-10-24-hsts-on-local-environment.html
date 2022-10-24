@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Strict-Transport-Security がローカルの開発環境にどう影響するか | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2022-10-24-hsts-on-local-environment.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="Strict Transport Security とは  RFC 6797: HTTP Strict Transport Security ..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>Strict-Transport-Security がローカルの開発環境にどう影響するか | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">Strict-Transport-Security がローカルの開発環境にどう影響するか</h1>
+                        <div class="subtitle published">2022-10-24</div>
+                        <div class="content">
+                            <h2>Strict Transport Security とは</h2>
+
+<p><a href="https://www.rfc-editor.org/rfc/rfc6797">RFC 6797: HTTP Strict Transport Security (HSTS)</a></p>
+
+<p>Strict Transport Security とは Web サイトへの接続の安全性を高めるための手法のひとつとして策定されている仕組みである。</p>
+
+<p>Strict Transport Security が設定されている Web サイトへの接続は、 たとえ http でのアクセスであったとしても https を用いて行われるようになっている。</p>
+
+<h2>Strict Transport Security の仕組み</h2>
+
+<p>当然、勝手にそのようになってくれるわけではなく、これを実現するための前提となる仕組みが存在する。</p>
+
+<p>サーバ側は HTTPS でリクエストしてもらうために、 Strict Transport Security の対象であることを明示する必要がある。<br/>
+具体的にはレスポンスヘッダに Strict-Transport-Security フィールドを付与し、適切な値を添えて返却することで「次回以降、このドメインには HTTPS でアクセスしてください」という表明を行う。</p>
+
+<p>これを受けてクライアント側（主にブラウザ）はレスポンスヘッダに Strict-Transport-Security フィールドを見つけると、その内容に応じて次回以降のアクセスを HTTPS に切り替えてくれる。</p>
+
+<p>大まかな流れとしては以上だが、 Strict Transport Security を利用するにあたっては、もう少し詳細に知っておくべきことがいくつかある。</p>
+
+<h2>Strict Transport Security を深く知る</h2>
+
+<h3>初回アクセスから HTTPS でのリクエストを求める</h3>
+
+<p>Strict Transport Security が実現したいのは Web サイトへの HTTPS でのアクセスだ。<br/>
+しかしサーバ側がこれを指定しているかどうかは一度アクセスしないとわからない。<br/>
+つまりどう頑張っても初回のリクエストが HTTP で行われた場合にはその恩恵を受けられない。</p>
+
+<p>この問題を解消する方法として HSTS preload という仕組みがある。</p>
+
+<p><a href="https://hstspreload.org/">HSTS Preload List Submission</a></p>
+
+<p>ここで管理されている HSTS preload list に入っているドメインについては、ブラウザがこのリストを参照することで初回アクセスから HTTPS を強制してくれる。</p>
+
+<h3>HTTP リクエストのレスポンスに付与された Strict-Transport-Security フィールドは参照されない</h3>
+
+<p>初回のリクエストが HTTP で行われる問題については HSTS preload によって解消されるが、もし HSTS preload list に含まれていないドメインに対して HTTP でリクエストが行われた場合、そのドメインへのアクセスは次から HTTPS に切り替えられるか。</p>
+
+<p>実は、答えは No である。</p>
+
+<p>なぜなら、ブラウザは HTTP でリクエストして得られたレスポンスに付与されている Strict-Transport-Security フィールドを無視するからだ。<br/>
+これは「そもそもその HTTP リクエスト、ひいてはそのレスポンスが安全であることが保証できない」ためである。<br/>
+要するに HTTPS でリクエストしない限り、「次回以降 HTTPS でリクエストする」設定にはならないようにできている。<br/>
+だからこそ HSTS preload の設定が重要であるし、サーバ側は HTTP でリクエストを受けた場合にリダイレクトして HTTPS でのアクセスに切り替えるように設定しておく必要がある。</p>
+
+<h2>Strict Transport Security の設定ができているサイトをローカルで動かす場合</h2>
+
+<p>開発している Web サービスにおいて Strict Transport Security を設定したい場合、ローカルでの開発環境についても HTTPS を扱えるように証明書等を準備する必要がある、とは限らない。<br/>
+というのも先に述べたとおり Strict Transport Security が有効になるためには HTTPS でアクセスされる必要があるからだ。</p>
+
+<p>たとえば手元で <code>http://localhost/</code> などにアクセスしてサービスの挙動を確認できるようにしているのであれば、サービス上のどこかで <code>https://localhost/</code> へのアクセスに切り替わる導線でもなければ Strict Transport Security が有効になることはない。</p>
+
+<p>したがって、環境ごとに Strict-Transport-Security フィールドをセットするかどうかを分岐させる必要はない。</p>
+
+<h2>ローカルで Strict Transport Security が機能して HTTP リクエストできない場合</h2>
+
+<p>人によっては <code>http://localhost/</code> にアクセスしたら <code>https://localhost/</code> にリダイレクトされる、という人もいるかもしれない。<br/>
+そうなっている場合、疑うべきは「ブラウザがキャッシュしている HSTS のリストに <code>localhost</code> が含まれている」可能性だ。</p>
+
+<p>複数のサービスを開発していれば、ローカルでも証明書を使って HTTPS 化していることもある。<br/>
+そのサービスが Strict Transport Security を設定していれば、ブラウザは <code>localhost</code> を HSTS のリストに入れているかもしれない。</p>
+
+<p>こういった場合の対処法としては <code>/etc/hosts</code> などで 127.0.0.1 に紐づけるドメインを増やしておくなどがある。<br/>
+当然ブラウザのキャッシュを削除することで HSTS のリストから外すという選択肢もあるが、そもそも HSTS を使っているサービスを手元で開発し続けるのであれば現実的ではない。</p>
+                        </div>
+                        <div class="subtitle published">2022-10-24T12:35:18.616981Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
