@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="simple-bar 上で MeetingBar を一部再現する | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2023-09-03-meetingbar-on-simplebar.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="MeetingBar とは  https://github.com/leits/MeetingBar  Mac で仕事をしていて Google..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>simple-bar 上で MeetingBar を一部再現する | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">simple-bar 上で MeetingBar を一部再現する</h1>
+                        <div class="subtitle published">2023-09-03</div>
+                        <div class="content">
+                            <h1>MeetingBar とは</h1>
+
+<p><a href="https://github.com/leits/MeetingBar">https://github.com/leits/MeetingBar</a></p>
+
+<p>Mac で仕事をしていて Google Meet や Zoom を使う際に便利なツール。<br/>
+メニューバー上に現在もしくは次のミーティングのタイトルや開始までの残り時間が表示される他、クリックすれば今日一日（あるいは明日も）のミーティングを確認することができる。<br/>
+さらにミーティングを選んでクリックすると対応するオンラインミーティングのページを開いてくれる。</p>
+
+<p>オンラインミーティングのページに簡単に飛べることもそうだが、次のミーティングが何で、何分後（あるいは何時間後）に始まるのかがひと目でわかるという点が非常に便利で愛用している。</p>
+
+<h1>simple-bar とは</h1>
+
+<p><a href="https://github.com/Jean-Tinland/simple-bar">https://github.com/Jean-Tinland/simple-bar</a></p>
+
+<p>一方の simple-bar は Übersicht という Mac で動くウィジェットアプリで利用できるウィジェットのひとつで yabai のステータスバーとしての機能をベースにメニューバーの代替を実現するものだ。<br/>
+Übersicht および yabai についてはここでは説明を省略する。<br/>
+興味のある人は以下のリンクから調べてみてほしい。</p>
+
+<ul>
+<li>Übersicht : <a href="http://tracesof.net/uebersicht/">http://tracesof.net/uebersicht/</a></li>
+<li>yabai : <a href="https://github.com/koekeishiya/yabai">https://github.com/koekeishiya/yabai</a></li>
+</ul>
+
+
+<p>僕は yabai を使っていることと、様々なアプリを活用していく中でメニューバーが乱雑になってしまっていることから simple-bar を導入した。<br/>
+Mac の仕組み上、メニューバーを完全に消すことはできず、カーソルを最上部に持っていけば従来のメニューバーが出てくるため、クリックしてメニューから何かを選ぶといった操作については従来のメニューバーに任せ、 simple-bar では何かしらの作業をしながら目に入ると便利なものを表示するようにしている（おそらく simple-bar 自体がそういう用途を想定したアプリである）。<br/>
+たとえば現在時刻やバッテリー残量、スピーカーの音量あたりはいつでも目視確認できると嬉しい。また最近は Spotify で BGM を流しながら作業することも多いので現在再生中の曲が見れるのも助かっている。</p>
+
+<h1>simple-bar に次のミーティングの情報を表示したい</h1>
+
+<p>操作が必要な事柄についてはメニューバーに任せ、普段の表示を簡素化できたという点では simple-bar に満足しているが、従来のメニューバーに表示されており simple-bar に表示されていないもののうち、これだけは外せないというものが1つある。それが次のミーティングの情報だ。<br/>
+次のミーティングが何で、開始時刻がいつか、という情報は仕事を進める上で素早く確認できることが望ましい情報である。<br/>
+しかし simple-bar には標準では次のミーティングを表示する機能は用意されていない。</p>
+
+<p>ではどうするか。<br/>
+simple-bar には User widgets という項目があり、コマンドやスクリプトを指定することができる。<br/>
+これを使って MeetingBar の表示をそのまま再現することにした。</p>
+
+<p>MeetingBar 自体の再発明をしたいわけではないので、既にメニューバーに存在している MeetingBar の表示内容をそのまま取得／表示できればよい。<br/>
+どうやって実現するかというと AppleScript を使う。</p>
+
+<p>AppleScript で &ldquo;System Events&rdquo; というアプリケーションを探し、その中の &ldquo;MeetingBar&rdquo; をとってくれば良い。
+MeetingBar などがあるメニューバーの右側は &ldquo;menu bar 2&rdquo; に含まれているので以下のコードで MeetingBar の枠に表示されている文字列（＝現在開催中 or 次のミーティングのタイトルおよび残り時間）を取得できる。</p>
+
+<pre><code>name of menu bar item 1 of menu bar 2
+</code></pre>
+
+<p>ついでにクリックしたときに現在開催中 or 次のミーティングの Meet の画面を開けるようにした。<br/>
+これはどうやるかというと、まずメニューバー上の MeetingBar をクリックして MeetingBar のメニューを開く。<br/>
+次に「開催中のミーティングに参加する」もしくは「次のミーティングに参加」というラベルのアイテムをクリックさせれば良い。<br/>
+この部分の表記に関しては日本語より英語でマッチングさせた方が確実だろうと思い、 MeetingBar の言語設定を英語にしてそれぞれ &ldquo;Join current event meeting&rdquo; と &ldquo;Join next event meeting&rdquo; でマッチングさせている。</p>
+
+<p>これで simple-bar 上に現在開催中もしくは次のミーティングの情報を表示させることと、そのミーティングのページを開くことができるようになった。<br/>
+クリックしてページを開く方は、 AppleScript でメニューバーを操作している都合上、動作が緩慢ではあるが、自分にとっては少ない労力で得たリターンとして十分だと考えている。</p>
+                        </div>
+                        <div class="subtitle published">2023-09-03T09:29:16.547512Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
