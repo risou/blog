@@ -42,6 +42,31 @@
                 <article class="articles">
                     
                     <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2024-01-14-creating-tool-for-getting-accesstoken.html">アクセストークンを得るためのツールを作っている</a></h1>
+                        <div class="subtitle published">2024-01-14</div>
+                        <div class="content">
+                            <p>Web で開発していると、様々なサービスのアカウントでログインする機能を作ったりとかその他諸々、 OAuth2 や OIDC のお世話になることがある。<br/>
+で、そういったものを利用するソフトウェアの開発に関わっていると、試しにリクエストを行うことも多々あるわけで、その度にアクセストークンを手動で取りに行くのって面倒だな、と思っていた。</p>
+
+<p>実際に開発が終わってしまえば、使う分にはアクセストークンを意識することはないが、底に至るまでの間にアクセストークンがほしいなというシーンがあり、そういうときに簡単にアクセストークンを取得したいな、ということでコマンド一発でアクセストークンを取れるツールを作ってみた。</p>
+
+<p><a href="https://github.com/risou/give-me-accesstoken">give-me-accesstoken</a></p>
+
+<p>とはいっても、これはあまり汎用的に使えるものではないと思うし、とりあえず自分や自分の周囲の同じようなことをしている人が使えればいいかな、ということでサポートしている範囲は最小限です。</p>
+
+<p>クライアント認証方式としては <code>client_secret_post</code> と <code>private_key_jwt</code> をサポートし、 <code>authorization code grant</code> と <code>client credentials grant</code> の2種類に対応している。</p>
+
+<p><code>authorization code grant</code> の場合は普通、途中でブラウザに飛んでブラウザ上でログインをしてからツールに戻ってくるという手順になるので、そういった挙動には対応している。<br/>
+ひとまず Google と GitHub では動作の確認をしている。<br/>
+ただ、自分が使いたい対象の一つが、この手法では上手く動かないことがわかっており、どうも Cookie にセッション情報がないと認可リクエストを通せないようだったので、そのケースに対応している。<br/>
+これはあまり正攻法ではないし、複数の問題を内包してしまう（パスワードを設定ファイルに直書きする必要があったり、 MFA に対応できなかったり）ため、これが使われることはあまり望んでいない。<br/>
+（しかし自分が必要としているから対応しているので、当然自分は使う）</p>
+
+<p>しばらくは自分で使ってみて、問題なさそうであれば自分の周囲の人たちに紹介してみようと思う。</p>
+                        </div>
+                    </div>
+                
+                    <div class="article">
                         <h1 class="title is-2"><a href="/entry/2023-09-12-try-using-arc.html">ブラウザを Arc に切り替えて何が変わったか</a></h1>
                         <div class="subtitle published">2023-09-12</div>
                         <div class="content">
@@ -434,76 +459,6 @@ Cookie の有効期限の指定については歴史的経緯で <code>Expires</
 </tbody>
 </table>
 
-                        </div>
-                    </div>
-                
-                    <div class="article">
-                        <h1 class="title is-2"><a href="/entry/2022-10-24-hsts-on-local-environment.html">Strict-Transport-Security がローカルの開発環境にどう影響するか</a></h1>
-                        <div class="subtitle published">2022-10-24</div>
-                        <div class="content">
-                            <h2>Strict Transport Security とは</h2>
-
-<p><a href="https://www.rfc-editor.org/rfc/rfc6797">RFC 6797: HTTP Strict Transport Security (HSTS)</a></p>
-
-<p>Strict Transport Security とは Web サイトへの接続の安全性を高めるための手法のひとつとして策定されている仕組みである。</p>
-
-<p>Strict Transport Security が設定されている Web サイトへの接続は、 たとえ http でのアクセスであったとしても https を用いて行われるようになっている。</p>
-
-<h2>Strict Transport Security の仕組み</h2>
-
-<p>当然、勝手にそのようになってくれるわけではなく、これを実現するための前提となる仕組みが存在する。</p>
-
-<p>サーバ側は HTTPS でリクエストしてもらうために、 Strict Transport Security の対象であることを明示する必要がある。<br/>
-具体的にはレスポンスヘッダに Strict-Transport-Security フィールドを付与し、適切な値を添えて返却することで「次回以降、このドメインには HTTPS でアクセスしてください」という表明を行う。</p>
-
-<p>これを受けてクライアント側（主にブラウザ）はレスポンスヘッダに Strict-Transport-Security フィールドを見つけると、その内容に応じて次回以降のアクセスを HTTPS に切り替えてくれる。</p>
-
-<p>大まかな流れとしては以上だが、 Strict Transport Security を利用するにあたっては、もう少し詳細に知っておくべきことがいくつかある。</p>
-
-<h2>Strict Transport Security を深く知る</h2>
-
-<h3>初回アクセスから HTTPS でのリクエストを求める</h3>
-
-<p>Strict Transport Security が実現したいのは Web サイトへの HTTPS でのアクセスだ。<br/>
-しかしサーバ側がこれを指定しているかどうかは一度アクセスしないとわからない。<br/>
-つまりどう頑張っても初回のリクエストが HTTP で行われた場合にはその恩恵を受けられない。</p>
-
-<p>この問題を解消する方法として HSTS preload という仕組みがある。</p>
-
-<p><a href="https://hstspreload.org/">HSTS Preload List Submission</a></p>
-
-<p>ここで管理されている HSTS preload list に入っているドメインについては、ブラウザがこのリストを参照することで初回アクセスから HTTPS を強制してくれる。</p>
-
-<h3>HTTP リクエストのレスポンスに付与された Strict-Transport-Security フィールドは参照されない</h3>
-
-<p>初回のリクエストが HTTP で行われる問題については HSTS preload によって解消されるが、もし HSTS preload list に含まれていないドメインに対して HTTP でリクエストが行われた場合、そのドメインへのアクセスは次から HTTPS に切り替えられるか。</p>
-
-<p>実は、答えは No である。</p>
-
-<p>なぜなら、ブラウザは HTTP でリクエストして得られたレスポンスに付与されている Strict-Transport-Security フィールドを無視するからだ。<br/>
-これは「そもそもその HTTP リクエスト、ひいてはそのレスポンスが安全であることが保証できない」ためである。<br/>
-要するに HTTPS でリクエストしない限り、「次回以降 HTTPS でリクエストする」設定にはならないようにできている。<br/>
-だからこそ HSTS preload の設定が重要であるし、サーバ側は HTTP でリクエストを受けた場合にリダイレクトして HTTPS でのアクセスに切り替えるように設定しておく必要がある。</p>
-
-<h2>Strict Transport Security の設定ができているサイトをローカルで動かす場合</h2>
-
-<p>開発している Web サービスにおいて Strict Transport Security を設定したい場合、ローカルでの開発環境についても HTTPS を扱えるように証明書等を準備する必要がある、とは限らない。<br/>
-というのも先に述べたとおり Strict Transport Security が有効になるためには HTTPS でアクセスされる必要があるからだ。</p>
-
-<p>たとえば手元で <code>http://localhost/</code> などにアクセスしてサービスの挙動を確認できるようにしているのであれば、サービス上のどこかで <code>https://localhost/</code> へのアクセスに切り替わる導線でもなければ Strict Transport Security が有効になることはない。</p>
-
-<p>したがって、環境ごとに Strict-Transport-Security フィールドをセットするかどうかを分岐させる必要はない。</p>
-
-<h2>ローカルで Strict Transport Security が機能して HTTP リクエストできない場合</h2>
-
-<p>人によっては <code>http://localhost/</code> にアクセスしたら <code>https://localhost/</code> にリダイレクトされる、という人もいるかもしれない。<br/>
-そうなっている場合、疑うべきは「ブラウザがキャッシュしている HSTS のリストに <code>localhost</code> が含まれている」可能性だ。</p>
-
-<p>複数のサービスを開発していれば、ローカルでも証明書を使って HTTPS 化していることもある。<br/>
-そのサービスが Strict Transport Security を設定していれば、ブラウザは <code>localhost</code> を HSTS のリストに入れているかもしれない。</p>
-
-<p>こういった場合の対処法としては <code>/etc/hosts</code> などで 127.0.0.1 に紐づけるドメインを増やしておくなどがある。<br/>
-当然ブラウザのキャッシュを削除することで HSTS のリストから外すという選択肢もあるが、そもそも HSTS を使っているサービスを手元で開発し続けるのであれば現実的ではない。</p>
                         </div>
                     </div>
                 
