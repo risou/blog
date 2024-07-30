@@ -17,6 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up
         uses: Raku/setup-raku@v1
+        with:
+          raku-version: '2024.05.1'
       - name: Install
         run: |
           sudo apt-get install libmarkdown2-dev
