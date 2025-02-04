@@ -42,6 +42,61 @@
                 <article class="articles">
                     
                     <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2025-02-04-visualize-active-window-floating-status-in-yabai.html">yabai の制御化でアクティブウィンドウが floating かどうかを可視化する</a></h1>
+                        <div class="subtitle published">2025-02-04</div>
+                        <div class="content">
+                            <p>ここ数年、ウィンドウマネージャとして yabai というツールを使っている。<br/>
+yabai が本領を発揮するためには System Integrity Protection を無効にする必要があるけれど、プライベートの環境も仕事の環境もなるべく同じに揃えておきたい気持ちがあり、会社から貸与されている Macbook の SIP を無効化しようとは全く思わないため、 SIP を無効化せずに使っている。<br/>
+ところが MacOS Sequoia にアップデートして以降、少なくとも SIP が有効な環境ではウィンドウを別のスペースに移動させることができなくなった。</p>
+
+<p>これまではスペースを大量に使って、スペースごとに最大でもウィンドウは2つ、といった運用をしてきたけれど、先の問題と作業環境のディスプレイの配置を変えたことが重なって、ウィンドウの管理方法が変わってきた。</p>
+
+<p>最近は同時に使うスペースの数を少し減らして、代わりに1つのスペースに3つ以上のウィンドウがある状態で yabai の zoom-fullscreen を多用している。<br/>
+また 4K 以上の解像度があると、3つ以上あるウィンドウの中から任意の2つを左右に分割したり、 2x2 の4分割にしたりという運用をすることもある。</p>
+
+<p>zoom-fullscreen は yabai 上で managed (= not floating) なままで使うことができるが、2分割や4分割で使うためには floating にする必要がある。すなわち yabai において managed=off にする必要がある。<br/>
+（本来的には、そのスペースにウィンドウが2つしかない状態にすることで yabai が勝手に左右に分割してくれる、という状態が望ましいし、4分割においても概ね同様のことが言える）</p>
+
+<p>で floating の ON/OFF を頻繁に切り替えると、ウィンドウのフォーカスを切り替えるときなど、ふとしたときに期待する操作が行えない、ということが発生する。これは floating なウィンドウは yabai に manage されていないことに起因しており、アクティブウィンドウが floating なときに <code>yabai -m window --focus east</code> などが使えないため、他のウィンドウの選択が少々面倒になる。</p>
+
+<p>ということでアクティブウィンドウが floating かどうかをいつでもわかるようにしたい、という動機で yabai, skhd, JankyBorders の設定を色々いじってみた。</p>
+
+<p>具体的には、アクティブウィンドウがどれかをわかりやすくする JankyBorders の色情報を切り替えている。 yabai managed なウィンドウであれば緑に、そうでなければ黄色になるように設定した。</p>
+
+<p>そのウィンドウが floating であるかどうかを判定したいタイミングは、大きくわけて以下の2種類になる。</p>
+
+<ul>
+<li>アクティブウィンドウの floating ON/OFF を切り替えたとき</li>
+<li>ウィンドウのフォーカスを切り替えたとき</li>
+</ul>
+
+
+<p>前者については、該当するショートカットを実行したときに borders コマンドを叩くようにしている。<br/>
+floating の切り替えを行う際はいつも、 toggle floating のショートカットを入力するか、上記の2分割、4分割の状態にするショートカットを入力するため、それらのコマンドに borders コマンドを組み合わせているだけだ。<br/>
+一例を示すと、以下のような感じ。</p>
+
+<pre><code class="sh">alt + shift - f : yabai -m window --toggle float; [ "$(yabai -m query --windows --window | jq -r '.["is-floating"]')" = "false" ] &amp;&amp; { borders active_color=0xc000ff80; :; } || borders active_color=0xc0ffff00
+</code></pre>
+
+<p><a href="https://github.com/risou/config/blob/8b2f46f7dc3b93118e95690e3e1382ced7d9ba3e/.skhdrc#L61">https://github.com/risou/config/blob/8b2f46f7dc3b93118e95690e3e1382ced7d9ba3e/.skhdrc#L61</a></p>
+
+<p>もう1つのケースがフォーカスを切り替えたときで、この場合は yabai の signal で borders コマンドを発火している。</p>
+
+<pre><code class="sh">yabai -m signal --add event=window_focused action='[ "$(yabai -m query --windows --window | jq -r ".[\"is-floating\"]")" = "false" ] &amp;&amp; { borders active_color=0xc000ff80; :; } || borders active_color=0xc0ffff00'
+</code></pre>
+
+<p><a href="https://github.com/risou/config/blob/8b2f46f7dc3b93118e95690e3e1382ced7d9ba3e/.yabairc#L95">https://github.com/risou/config/blob/8b2f46f7dc3b93118e95690e3e1382ced7d9ba3e/.yabairc#L95</a></p>
+
+<p>これで、常に現在アクティブなウィンドウが floating かどうかが目に見えるようになった。</p>
+
+<p>とはいえ、せっかくタイル型のウィンドウマネージャを用いているのに floating を多用するのはもったいないように感じている。</p>
+
+<p>現代においては AeroSpace という非常に魅力的な選択肢もあり、時間に余裕ができたら試してみようか、という気持ちは少しある。<br/>
+思想としては AeroSpace よりも yabai の方が好みなので、可能であればこのまま yabai を使い続けたいが、さて。</p>
+                        </div>
+                    </div>
+                
+                    <div class="article">
                         <h1 class="title is-2"><a href="/entry/2024-05-20-replace-ubersicht-with-sketchybar.html">Übersicht に SketchyBar に置き換えた</a></h1>
                         <div class="subtitle published">2024-05-20</div>
                         <div class="content">
@@ -396,67 +451,6 @@ Arc は既に誰でもダウンロードできるようになっており、現�
 </li>
 </ul>
 
-                        </div>
-                    </div>
-                
-                    <div class="article">
-                        <h1 class="title is-2"><a href="/entry/2023-09-03-meetingbar-on-simplebar.html">simple-bar 上で MeetingBar を一部再現する</a></h1>
-                        <div class="subtitle published">2023-09-03</div>
-                        <div class="content">
-                            <h1>MeetingBar とは</h1>
-
-<p><a href="https://github.com/leits/MeetingBar">https://github.com/leits/MeetingBar</a></p>
-
-<p>Mac で仕事をしていて Google Meet や Zoom を使う際に便利なツール。<br/>
-メニューバー上に現在もしくは次のミーティングのタイトルや開始までの残り時間が表示される他、クリックすれば今日一日（あるいは明日も）のミーティングを確認することができる。<br/>
-さらにミーティングを選んでクリックすると対応するオンラインミーティングのページを開いてくれる。</p>
-
-<p>オンラインミーティングのページに簡単に飛べることもそうだが、次のミーティングが何で、何分後（あるいは何時間後）に始まるのかがひと目でわかるという点が非常に便利で愛用している。</p>
-
-<h1>simple-bar とは</h1>
-
-<p><a href="https://github.com/Jean-Tinland/simple-bar">https://github.com/Jean-Tinland/simple-bar</a></p>
-
-<p>一方の simple-bar は Übersicht という Mac で動くウィジェットアプリで利用できるウィジェットのひとつで yabai のステータスバーとしての機能をベースにメニューバーの代替を実現するものだ。<br/>
-Übersicht および yabai についてはここでは説明を省略する。<br/>
-興味のある人は以下のリンクから調べてみてほしい。</p>
-
-<ul>
-<li>Übersicht : <a href="http://tracesof.net/uebersicht/">http://tracesof.net/uebersicht/</a></li>
-<li>yabai : <a href="https://github.com/koekeishiya/yabai">https://github.com/koekeishiya/yabai</a></li>
-</ul>
-
-
-<p>僕は yabai を使っていることと、様々なアプリを活用していく中でメニューバーが乱雑になってしまっていることから simple-bar を導入した。<br/>
-Mac の仕組み上、メニューバーを完全に消すことはできず、カーソルを最上部に持っていけば従来のメニューバーが出てくるため、クリックしてメニューから何かを選ぶといった操作については従来のメニューバーに任せ、 simple-bar では何かしらの作業をしながら目に入ると便利なものを表示するようにしている（おそらく simple-bar 自体がそういう用途を想定したアプリである）。<br/>
-たとえば現在時刻やバッテリー残量、スピーカーの音量あたりはいつでも目視確認できると嬉しい。また最近は Spotify で BGM を流しながら作業することも多いので現在再生中の曲が見れるのも助かっている。</p>
-
-<h1>simple-bar に次のミーティングの情報を表示したい</h1>
-
-<p>操作が必要な事柄についてはメニューバーに任せ、普段の表示を簡素化できたという点では simple-bar に満足しているが、従来のメニューバーに表示されており simple-bar に表示されていないもののうち、これだけは外せないというものが1つある。それが次のミーティングの情報だ。<br/>
-次のミーティングが何で、開始時刻がいつか、という情報は仕事を進める上で素早く確認できることが望ましい情報である。<br/>
-しかし simple-bar には標準では次のミーティングを表示する機能は用意されていない。</p>
-
-<p>ではどうするか。<br/>
-simple-bar には User widgets という項目があり、コマンドやスクリプトを指定することができる。<br/>
-これを使って MeetingBar の表示をそのまま再現することにした。</p>
-
-<p>MeetingBar 自体の再発明をしたいわけではないので、既にメニューバーに存在している MeetingBar の表示内容をそのまま取得／表示できればよい。<br/>
-どうやって実現するかというと AppleScript を使う。</p>
-
-<p>AppleScript で &ldquo;System Events&rdquo; というアプリケーションを探し、その中の &ldquo;MeetingBar&rdquo; をとってくれば良い。
-MeetingBar などがあるメニューバーの右側は &ldquo;menu bar 2&rdquo; に含まれているので以下のコードで MeetingBar の枠に表示されている文字列（＝現在開催中 or 次のミーティングのタイトルおよび残り時間）を取得できる。</p>
-
-<pre><code>name of menu bar item 1 of menu bar 2
-</code></pre>
-
-<p>ついでにクリックしたときに現在開催中 or 次のミーティングの Meet の画面を開けるようにした。<br/>
-これはどうやるかというと、まずメニューバー上の MeetingBar をクリックして MeetingBar のメニューを開く。<br/>
-次に「開催中のミーティングに参加する」もしくは「次のミーティングに参加」というラベルのアイテムをクリックさせれば良い。<br/>
-この部分の表記に関しては日本語より英語でマッチングさせた方が確実だろうと思い、 MeetingBar の言語設定を英語にしてそれぞれ &ldquo;Join current event meeting&rdquo; と &ldquo;Join next event meeting&rdquo; でマッチングさせている。</p>
-
-<p>これで simple-bar 上に現在開催中もしくは次のミーティングの情報を表示させることと、そのミーティングのページを開くことができるようになった。<br/>
-クリックしてページを開く方は、 AppleScript でメニューバーを操作している都合上、動作が緩慢ではあるが、自分にとっては少ない労力で得たリターンとして十分だと考えている。</p>
                         </div>
                     </div>
                 
