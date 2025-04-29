@@ -1,4 +1,4 @@
-title: yabai の制御化でアクティブウィンドウが floating かどうかを可視化する
+title: yabai の制御下でアクティブウィンドウが floating かどうかを可視化する
 date: 2025-02-04
 datetime: 2025-02-04T13:58:09.356878Z
 ---
