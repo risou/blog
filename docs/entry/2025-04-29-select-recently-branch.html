@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="fzf で最近使ったブランチから選ぶ | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2025-04-29-select-recently-branch.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="普段の Git の操作は、なるべく使っているエディタや IDE の機能に任せよう、と思いつつ、なんだかんだと込み入ったことをしようとするとター..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>fzf で最近使ったブランチから選ぶ | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">fzf で最近使ったブランチから選ぶ</h1>
+                        <div class="subtitle published">2025-04-29</div>
+                        <div class="content">
+                            <p>普段の Git の操作は、なるべく使っているエディタや IDE の機能に任せよう、と思いつつ、なんだかんだと込み入ったことをしようとするとターミナルを開いて git コマンドを直接打つことになってしまっている。</p>
+
+<p>最近は同時に扱うリポジトリが増え、さらに複数のブランチを並行して開発を進める、というケースがにわかに増えてきている。これによって最近感じていた課題が、「あの作業はどのブランチでやっていたか」である。特にちょっと小さなコミットを積んですぐ別のブランチに移る、ということをやっていると、それぞれのブランチの名前を部分的に覚えておくことすら煩わしく感じるようになってしまった。</p>
+
+<p>ブランチを切り替えるとき、普段遣いしていたのは以下のようなコマンドである。</p>
+
+<pre><code class="sh">git branch | grep -v HEAD | sed -e \'s/* /  /g\' | string trim | fzf-tmux | read -l result; and commandline "git switch $result"; and commandline -f execute
+</code></pre>
+
+<p>fzf でローカルブランチをリストアップしてその中から選ぶ、というものでシンプルで使い勝手が良い。ただ、普通に <code>git branch</code> しているので、リストがブランチ名の昇順になってしまう。ソート指定で最新コミット順にするという手もあるが、直感的に並ぶかというとそういうわけではない、というかゆいところに手が届かない感じに悩んでいた。</p>
+
+<p>で、ブランチを頻繁に切り替えるときに代用するようになったのが <code>git switch -</code> である。これは直前のブランチに戻るコマンドで、最近の自分のユースケースにかなりマッチしている。時々2つ前のブランチに戻りたいときもあり、そういうときは <code>git switch @{-2}</code> と打ったりしていた。</p>
+
+<p>これを繰り返していると、最近利用した順に並んでいるブランチ名から選択して切り替えたい、と思うようになったので、そういう function を作ってみた。</p>
+
+<p><a href="https://github.com/risou/config/blob/aee46efc0237b961236c727af868126cc8723973/config.fish#L114-L153">https://github.com/risou/config/blob/aee46efc0237b961236c727af868126cc8723973/config.fish#L114-L153</a></p>
+
+<p>最初は <code>git switch @{-n}</code> を 数十回繰り返す、みたいなことをしていたが、当然これだと遅いので、一気に対象を取得しようと <code>git reflog</code> の結果からブランチ切り替えのログを抽出して、ブランチ名のリストを得るという方向に切り替えた。</p>
+
+<p>これによって、「いくつ前のブランチに戻りたいか」がわかっているときはもちろん、少し曖昧なときもリストを見て名前から判別できるようになった。</p>
+
+<p>使い勝手に問題がないかや速度面に問題がないかなどは、これから使っていく中でチューニングしていく予定だが、最近気になっていたことを解消するものを作れたことに満足している。</p>
+                        </div>
+                        <div class="subtitle published">2025-04-29T14:28:11.620800Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
