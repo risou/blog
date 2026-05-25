@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="yashiki で表示するウィンドウを自在に切り替える | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2026-05-25-my-use-case-with-yashiki.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="タイル型ウィンドウマネージャ yashiki の導入  macOS を利用する際は、かなり前からタイル型ウィンドウマネージャを導入している。 ..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>yashiki で表示するウィンドウを自在に切り替える | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">yashiki で表示するウィンドウを自在に切り替える</h1>
+                        <div class="subtitle published">2026-05-25</div>
+                        <div class="content">
+                            <h2>タイル型ウィンドウマネージャ yashiki の導入</h2>
+
+<p>macOS を利用する際は、かなり前からタイル型ウィンドウマネージャを導入している。</p>
+
+<p>最初に導入したのは Amethyst で、もうだいぶ昔のことなので詳細は覚えていないが、何かしらのアプリケーションとの相性の問題があって、あまり長くは使わなかったと記憶している。</p>
+
+<p>その後は macOS でのタイル型ウィンドウマネージャを諦めていた時期もあったが、併用していた Linux ではタイル型ウィンドウマネージャを使っていたこともあり、良いものがあれば、という気持ちは常に持っていた。</p>
+
+<p>ある時、新しい MacBook のセットアップをしたタイミングで yabai というタイル型ウィンドウマネージャを導入して、それ以降は概ねずっと何かしらのタイル型ウィンドウマネージャを使っている。<br/>
+期間的には yabai を最も長く使っていたが、他のものも試したいという気持ちで AeroSpace に切り替えて使っていた時期もある。<br/>
+そしてまた今年、新年を迎えたタイミングで新しいタイル型ウィンドウマネージャを試そうという機運になった。</p>
+
+<p>候補は OmniWM と yashiki の2つ。</p>
+
+<p><a href="https://github.com/BarutSRB/OmniWM">BarutSRB/OmniWM: MacOS Niri and Hyprland inspired tiling window manager that&rsquo;s developer signed and notorized (safe for managed enterprise environments). Aiming for parity and extra innovation.</a></p>
+
+<p><a href="https://github.com/typester/yashiki">typester/yashiki: macOS tiling window manager</a></p>
+
+<p>一口にタイル型ウィンドウマネージャといってもいろいろな種類があり、この2つはウィンドウマネージャとしての基本的な考え方が大きく異なっている。<br/>
+ここではタイル型ウィンドウマネージャの歴史や系譜については触れないが、今回は両方を実際にインストールして試した。<br/>
+少しの時間ではあるが実際に触ってみて、現在の自分の使い方に合っているのは yashiki だと判断し、今は yashiki を常用している。</p>
+
+<h2>自分の基本的な使い方</h2>
+
+<p>yashiki がどのようなものかはリポジトリを見に行ってもらうのが速いと思うが、自分の使い方を一部紹介する。</p>
+
+<p>前提として、デフォルトのレイアウトは tatami を採用している。</p>
+
+<p>まずは README に書かれている設定にもあるが macOS の Spaces を再現したいので、 <code>ctrl-1</code> 〜 <code>ctrl-9</code> でそれぞれ tag N を表示するようにしているが、 tag N はそれぞれ bitmask 2<sup>N-1</sup> を表す。<br/>
+それぞれの tag にアプリケーションを割り当てており、上記のホットキーでスムーズに切り替えられるようにしている。</p>
+
+<p>yashiki （や yashiki が参考にしている river）が面白いのは tag を bitmask として表現しているところだ。<br/>
+先にも書いたが、例えば <code>ctrl-3</code> は tag 3 に切り替えるが、これは bitmask 4(<code>binary: 100</code>)に相当する。<br/>
+逆に bitmask 3(<code>binary: 011</code>)は tag 1 と tag 2 の和集合であり、これを表示すると tag 1 に割り当てられたウィンドウと tag 2 に割り当てられたウィンドウの両方が表示される。</p>
+
+<p>これを活かすため、自分はさらに <code>ctrl-shift-1</code> 〜 <code>ctrl-shift-9</code> に 2<sup>N-1</sup> を tag-toggle する設定を追加している。<br/>
+yashiki tag-toggle コマンドは、指定した bitmask と現在表示している bitmask の XOR をとる。<br/>
+これによって、たとえば <code>ctrl-2</code> を押して tag 2 (= bitmask 2) を表示している状態で、 <code>ctrl-shift-5</code> を押すと bitmask 18 を表示している状態になる。<br/>
+これはつまり tag 2 (= bitmask 2) と tag 5 (= bitmask 16) を同時に表示している。<br/>
+tag-toggle コマンドは XOR をとった結果が 0 になる場合は何もしないので、表示する tag がない状態にはならない。</p>
+
+<p>最初に tag N にそれぞれ1つ（ないしは2つくらいまでの）ウィンドウを割り当てて置くことで、1つのウィンドウを画面全体に表示したい場合も、2つのウィンドウを左右に分割したい場合も簡単に切り替えることができる。</p>
+
+<p>また tatami は master-stack 式のレイアウトだが、 master 側（画面の左側）に置くウィンドウの数を増減できるので、 4K ディスプレイなどでウィンドウを 2x2 に配置することも容易にできる。</p>
+
+<h2>yashiki を紹介するトークをしてきた</h2>
+
+<p><a href="https://shonanka.connpass.com/event/389138/">湘.なんか #4 - connpass</a></p>
+
+<p>先日、「なんか」を話す会に参加してきた。<br/>
+何を話そうか、というところで最近自分の中でホットな yashiki の話をしてきたという次第。</p>
+
+<script async class="docswell-embed" src="https://www.docswell.com/assets/libs/docswell-embed/docswell-embed.min.js" data-src="https://www.docswell.com/slide/ZR868J/embed" data-aspect="0.5625"></script>
+
+
+<div class="docswell-link"><a href="https://www.docswell.com/s/risou/ZR868J-2026-05-25-yashiki-introduction">macOS のタイル型ウィンドウマネージャ yashiki の紹介 by @risou</a></div>
+
+
+<p>自分はそれなりにタイル型ウィンドウマネージャを使ってきているけど、がっつり使いこなしているというよりは、浅瀬で基本的な機能だけを使っているという感じなので、他の人がどう使っているかを知りたい。<br/>
+そのためにもまず、使ってくれる人が増えたらいいなあ、という思いがあったのでちょうどよい場が得られてよかった。</p>
+                        </div>
+                        <div class="subtitle published">2026-05-25T15:54:23.769602Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>
