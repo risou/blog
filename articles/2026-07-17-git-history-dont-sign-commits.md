@@ -1,4 +1,4 @@
-title: `git history *` で作られるコミットには署名がつかない
+title: "`git history *` で作られるコミットには署名がつかない"
 date: 2026-07-17
 datetime: 2026-07-17T05:07:58.253804Z
 ---
