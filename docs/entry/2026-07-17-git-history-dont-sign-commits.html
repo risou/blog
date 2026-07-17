@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29519043-1"></script>
+        <script>
+         window.dataLayer = window.dataLayer || [];
+         function gtag(){dataLayer.push(arguments);}
+         gtag('js', new Date());
+         gtag('config', 'UA-29519043-1');
+        </script>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="`git history *` で作られるコミットには署名がつかない | risou's Lithograph" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="https://blog.risouf.net/entry/2026-07-17-git-history-dont-sign-commits.html" />
+        <meta property="og:image" content="https://blog.risouf.net/static/img/sunglass.jpeg" />
+        <meta property="og:site_name" content="risou's Lithograph" />
+        <meta property="og:description" content="Git 2.54 で git history reword , git history split コマンドが、 Git 2.55 で git..." /><meta property="fb:app_id" content="2945406965474658" /><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@risou" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        
+        <title>`git history *` で作られるコミットには署名がつかない | risou's Lithograph</title>
+    </head>
+    <body>
+        <section class="hero is-medium is-bold is-dark">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-1">risou's Lithograph</h1>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <nav class="level is-mobile">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <p class="level-item"><a href="/">top</a></p>
+                        <p class="level-item"><a href="/list.html">list</a></p>
+                    </div>
+                </nav>
+                <article class="articles">
+                    <div class="article">
+                        <h1 class="title is-2">`git history *` で作られるコミットには署名がつかない</h1>
+                        <div class="subtitle published">2026-07-17</div>
+                        <div class="content">
+                            <p>Git 2.54 で <code>git history reword</code> , <code>git history split</code> コマンドが、 Git 2.55 で <code>git history fixup</code> コマンドが追加された。それぞれ以下の作業を置き換えられる。</p>
+
+<ul>
+<li><code>git history reword</code>
+
+<ul>
+<li><code>git rebase -i</code> で <code>reword</code> を指定</li>
+</ul>
+</li>
+<li><code>git history split</code>
+
+<ul>
+<li><code>git rebase -i</code> で <code>edit</code> を指定</li>
+<li><code>git reset HEAD~</code> して分割したいコミットの差分を uncommitted にする</li>
+<li>&ldquo;<code>git add -p</code> して <code>git commit</code>&rdquo; を分割後のコミットの単位で実行</li>
+<li><code>git rebase --continue</code></li>
+</ul>
+</li>
+<li><code>git history fixup</code>
+
+<ul>
+<li><code>git commit --fixup</code> して <code>git rebase --autosquash</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>いずれも、対象のコミットハッシュさえ取れればかゆいところに手が届く便利なコマンドである。<br/>
+ただし、Git 2.55 時点では3つとも experimental である。</p>
+
+<p>そして、これらのコマンドによって作られたコミットはどうも署名されないようだ。
+手元（Git 2.55.0）で試したところ、コミットを再生成する際に <code>commit.gpgsign</code> が反映されず、対象コミット以降がすべて未署名になった。<br/>
+実装を見ると、コミット時の署名有無の指定をする箇所で NULL が渡されており、署名付きコミットの処理に入ることはなさそうに見える。</p>
+
+<p><a href="https://github.com/git/git/blob/e9019fcafe0040228b8631c30f97ae1adb61bcdc/builtin/history.c#L145-L147">https://github.com/git/git/blob/e9019fcafe0040228b8631c30f97ae1adb61bcdc/builtin/history.c#L145-L147</a></p>
+
+<p>今後のアップデートでこの問題が改善する可能性は十分にあるが、少なくとも現時点ではコミットにちゃんと署名をつけたい場合、 <code>git history</code> の利用を控える、もしくは <code>git history</code> の実行後に以下のコマンドを実行する必要がある。</p>
+
+<pre><code class="sh">git rebase --force-rebase {署名を付け直したい最も古いコミットの親コミットのハッシュ}
+</code></pre>
+
+<p><code>--force-rebase</code> をつけておかないと no-op になって署名が外れたコミットのままになるので注意。</p>
+                        </div>
+                        <div class="subtitle published">2026-07-17T05:07:58.253804Z</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+                Copyright &copy; 2019- risou All Rights Reserved.
+            </div>
+        </footer>
+    </body>
+</html>

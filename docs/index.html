@@ -42,6 +42,55 @@
                 <article class="articles">
                     
                     <div class="article">
+                        <h1 class="title is-2"><a href="/entry/2026-07-17-git-history-dont-sign-commits.html">`git history *` で作られるコミットには署名がつかない</a></h1>
+                        <div class="subtitle published">2026-07-17</div>
+                        <div class="content">
+                            <p>Git 2.54 で <code>git history reword</code> , <code>git history split</code> コマンドが、 Git 2.55 で <code>git history fixup</code> コマンドが追加された。それぞれ以下の作業を置き換えられる。</p>
+
+<ul>
+<li><code>git history reword</code>
+
+<ul>
+<li><code>git rebase -i</code> で <code>reword</code> を指定</li>
+</ul>
+</li>
+<li><code>git history split</code>
+
+<ul>
+<li><code>git rebase -i</code> で <code>edit</code> を指定</li>
+<li><code>git reset HEAD~</code> して分割したいコミットの差分を uncommitted にする</li>
+<li>&ldquo;<code>git add -p</code> して <code>git commit</code>&rdquo; を分割後のコミットの単位で実行</li>
+<li><code>git rebase --continue</code></li>
+</ul>
+</li>
+<li><code>git history fixup</code>
+
+<ul>
+<li><code>git commit --fixup</code> して <code>git rebase --autosquash</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>いずれも、対象のコミットハッシュさえ取れればかゆいところに手が届く便利なコマンドである。<br/>
+ただし、Git 2.55 時点では3つとも experimental である。</p>
+
+<p>そして、これらのコマンドによって作られたコミットはどうも署名されないようだ。
+手元（Git 2.55.0）で試したところ、コミットを再生成する際に <code>commit.gpgsign</code> が反映されず、対象コミット以降がすべて未署名になった。<br/>
+実装を見ると、コミット時の署名有無の指定をする箇所で NULL が渡されており、署名付きコミットの処理に入ることはなさそうに見える。</p>
+
+<p><a href="https://github.com/git/git/blob/e9019fcafe0040228b8631c30f97ae1adb61bcdc/builtin/history.c#L145-L147">https://github.com/git/git/blob/e9019fcafe0040228b8631c30f97ae1adb61bcdc/builtin/history.c#L145-L147</a></p>
+
+<p>今後のアップデートでこの問題が改善する可能性は十分にあるが、少なくとも現時点ではコミットにちゃんと署名をつけたい場合、 <code>git history</code> の利用を控える、もしくは <code>git history</code> の実行後に以下のコマンドを実行する必要がある。</p>
+
+<pre><code class="sh">git rebase --force-rebase {署名を付け直したい最も古いコミットの親コミットのハッシュ}
+</code></pre>
+
+<p><code>--force-rebase</code> をつけておかないと no-op になって署名が外れたコミットのままになるので注意。</p>
+                        </div>
+                    </div>
+                
+                    <div class="article">
                         <h1 class="title is-2"><a href="/entry/2026-07-07-lifecycle-of-mobile-battery.html">モバイルバッテリーを使う際のライフサイクル</a></h1>
                         <div class="subtitle published">2026-07-08</div>
                         <div class="content">
@@ -362,57 +411,6 @@ Go60 の親指キーの数は少なくはなく、その点には助けられて
 
 <p>もし、メインの作業場所が2つになっても Glove80 もあるので今後もこの布陣で十分にやっていけると確信している。<br/>
 この2つと長く付き合っていくつもりなので、大事に扱っていきたい。</p>
-                        </div>
-                    </div>
-                
-                    <div class="article">
-                        <h1 class="title is-2"><a href="/entry/2025-07-08-audible-life.html">Audible を使い始めて5ヶ月くらい経ったので雑感を書く</a></h1>
-                        <div class="subtitle published">2025-07-08</div>
-                        <div class="content">
-                            <p>使い始めて5ヶ月弱くらいになる。主に散歩や通勤の際に利用している。</p>
-
-<p>月額料金がそこそこするので、「元が取れているかどうか」は正直よくわからないが、現時点ではあまり気にしていない。全然使わなくなったなーという時が来たら解約すればいいか、くらいのスタンス。</p>
-
-<p>履歴を見てみると、今聴いているものも含めて 18 冊。うち 3 冊は過去に紙や電子書籍で読んだことがある本なので、新たに触れた本は 15 冊。通勤頻度が特別高いわけでもないので、妥当なペースだと思う。</p>
-
-<h3>どんなときに聴くか</h3>
-
-<p>先にも書いたが、主に散歩や通勤のときに聴いている。<br/>
-他にも、定期的な通院や人と会う予定があるときなどにも使うことが多い。</p>
-
-<p>基本的には、歩いているときか電車に乗っているときだけ。車に乗っているときには聴かない。<br/>
-また、気分が乗らないときは散歩や通勤中でも聴かないこともある。</p>
-
-<h3>どんな本を聴くか</h3>
-
-<p>「これが聴きたくて契約した」という本があったわけではなく、目についた本をスマートフォンにダウンロードして、その中から気分で選んでいる感じ。</p>
-
-<p>経済の本やビジネス書、断捨離系など、興味のある分野に関連しそうな本を選ぶことが多い。</p>
-
-<p>今のところ小説は聴いていないが、シリーズものの小説もラインナップされている。シリーズものは「読破（聴破？）」するのにかなり時間がかかりそうだなと思う。</p>
-
-<h3>良かった点</h3>
-
-<p>特に歩いているときに暇を持て余さないのが良い。</p>
-
-<p>基本的に歩くのは好きで、近場なら歩いて移動することも多いが、見慣れた景色だと時間を持て余しがち。思索にふけるのも好きだけど、そういう気分じゃないときもあるので、そういう時に本を「聴きながら歩ける」のはありがたい。</p>
-
-<p>一方、通勤などで電車に乗っているときは歩いているときほどのメリットは感じない。混んでいて両手が使えない場面では助かるが、空いていれば紙の本でもいい。</p>
-
-<p>これは今使っているイヤホンのノイズキャンセリング機能が壊れているのも大きい。電車の中だとある程度音量を上げないと聴き取りづらいが、耳のことを考えるとあまり大きな音では聴きたくない。そろそろ買い替えてもいいかもしれない、と思いつつそのまま。</p>
-
-<h3>不満な点</h3>
-
-<p>Audible を使うようになってから、ちょっと気になる本があったら「 Audible にないかな？」と調べることが増えたが、だいたい無い。<br/>
-今のところ、このパターンで Audible にあったことが一度もない。</p>
-
-<p>そのため、本当に読みたい本は結局紙か電子書籍で積んでいくことになる。これはこれで消化したいけれど、読むペースより積むペースの方が早いので、 Audible を使うことでこの問題が解決したわけではなかった。</p>
-
-<h3>総合的な感想</h3>
-
-<p>個人的には Audible は気に入っている。もちろん、そうでなければ続けていない。</p>
-
-<p>「これが聴きたい！」と思った本が Audible にあれば最高だけど、そうでなくても Audible で見つけて聴いた本をきっかけに、新しい本と出会えている実感があるので、十分満足している。</p>
                         </div>
                     </div>
                 
