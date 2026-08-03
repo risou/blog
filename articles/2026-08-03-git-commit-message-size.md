@@ -8,6 +8,7 @@ datetime: 2026-08-03T15:37:50.055005Z
 <script async class="docswell-embed" src="https://www.docswell.com/assets/libs/docswell-embed/docswell-embed.min.js" data-src="https://www.docswell.com/slide/K3JLXV/embed" data-aspect="0.5625"></script><div class="docswell-link"><a href="https://www.docswell.com/s/risou/K3JLXV-2026-08-03-git-commit-message-size">git のコミットメッセージはどこまで大きくできるのか by @risou</a></div>
 
 要約すると：
+
 - Git はファイルサイズや文字数の制限を設けていない
 - だいたい 64KB くらいにおさめると安全
 	- 日本語文字なら20,000文字くらい
